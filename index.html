@@ -3,97 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoDeluK29 - Scanner V9</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>AutoDeluK29 - Ultimate V10</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --primary: #00e5ff; --bg-body: #0a0e17; --bg-panel: #151a23; --text: #fff; --text-dim: #8b9bb4; --success: #00e676; --pin-active: #ffeb3b; }
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg-body); color: var(--text); margin: 0; padding-bottom: 50px; }
+        :root { --primary: #00e5ff; --bg-body: #050505; --bg-panel: #111; --text: #fff; --text-dim: #aaa; --success: #00e676; --danger: #ff1744; --warning: #ffea00; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg-body); color: var(--text); margin: 0; padding-bottom: 80px; }
         
         /* HEADER */
-        header { background: rgba(21, 26, 35, 0.95); padding: 15px 20px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-        .brand { font-size: 1.5rem; font-weight: 800; } .brand span { color: var(--primary); }
+        header { background: rgba(10, 10, 10, 0.95); padding: 15px 20px; border-bottom: 2px solid #222; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        .brand { font-size: 1.4rem; font-weight: 900; letter-spacing: 1px; } .brand span { color: var(--primary); }
+        .version-badge { background: #222; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; border: 1px solid #333; }
 
-        /* NUEVA ZONA DE FILTROS (TIPO ESCÁNER) */
-        .filter-area { padding: 25px 15px; background: radial-gradient(circle at center, #1e2736 0%, var(--bg-body) 70%); text-align: center; }
-        .filter-container { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; max-width: 600px; margin: 0 auto; }
-        
-        select { 
-            flex: 1; min-width: 140px; padding: 12px; border-radius: 8px; border: 1px solid #444; 
-            background: #111; color: #fff; font-size: 1rem; outline: none; cursor: pointer;
-        }
-        select:focus { border-color: var(--primary); }
-        
-        .btn-go { 
-            background: var(--primary); color: #000; font-weight: bold; border: none; padding: 12px 25px; 
-            border-radius: 8px; cursor: pointer; transition: 0.2s; min-width: 100px;
-        }
-        .btn-go:hover { background: #fff; box-shadow: 0 0 15px var(--primary); }
+        /* ZONA DE SELECCIÓN (FILTROS) */
+        .filter-area { padding: 20px; background: radial-gradient(circle at top, #1a1a1a 0%, #000 100%); border-bottom: 1px solid #333; }
+        .filter-container { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; max-width: 800px; margin: 0 auto; }
+        select { flex: 1; min-width: 130px; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-weight: 500; outline: none; }
+        select:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
+        .btn-go { background: var(--primary); color: #000; border: none; padding: 0 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-go:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--primary); }
 
         /* AREA DE TRABAJO */
-        #workspace { max-width: 1000px; margin: 0 auto; padding: 20px; display: none; }
-        .car-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .car-info h2 { color: var(--primary); margin: 0; }
-        .car-info p { margin: 5px 0 0 0; color: #aaa; font-size: 0.9rem; }
+        #workspace { max-width: 1000px; margin: 0 auto; padding: 20px; display: none; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
 
-        .section-title { color: var(--text-dim); margin: 30px 0 15px 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        
-        /* VISOR DE IMÁGENES (Con corrección de carga) */
-        .viewer { position: relative; height: 300px; background: #000; border-radius: 12px; border: 2px solid #333; overflow: hidden; }
-        .viewer img { width: 100%; height: 100%; object-fit: contain; opacity: 0.8; }
-        
-        .hotspot { position: absolute; width: 35px; height: 35px; background: rgba(0,229,255,0.2); border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; animation: pulse 2s infinite; color: #fff; z-index: 10; font-size: 1.2rem; }
-        @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(0,229,255,0.7);} 100% {box-shadow: 0 0 0 15px rgba(0,229,255,0);} }
+        /* FICHA TÉCNICA */
+        .car-badges { display: flex; gap: 10px; margin-top: 5px; flex-wrap: wrap; }
+        .badge { font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; background: #222; border: 1px solid #444; color: #ccc; }
+        .badge i { margin-right: 5px; color: var(--primary); }
 
-        /* TARJETAS Y MODALES */
+        /* ZONA DTC (ESCÁNER DE ERRORES) */
+        .dtc-section { margin: 25px 0; background: #0f0f0f; padding: 15px; border-radius: 12px; border: 1px solid #333; display: flex; flex-direction: column; gap: 10px; }
+        .dtc-input-group { display: flex; gap: 10px; }
+        .dtc-input { flex: 1; background: #000; border: 1px solid #444; color: var(--danger); font-family: monospace; font-size: 1.2rem; padding: 10px; border-radius: 6px; text-transform: uppercase; font-weight: bold; }
+        .dtc-input::placeholder { color: #444; font-family: sans-serif; font-size: 0.9rem; font-weight: normal; }
+        .btn-dtc { background: #222; color: var(--danger); border: 1px solid var(--danger); padding: 0 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .dtc-result { display: none; padding: 10px; background: rgba(255, 23, 68, 0.1); border-left: 3px solid var(--danger); margin-top: 10px; font-size: 0.9rem; }
+
+        /* VISOR DE COMPONENTES */
+        .viewer { position: relative; height: 320px; background: #000; border-radius: 12px; border: 1px solid #333; overflow: hidden; margin: 20px 0; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+        .viewer img { width: 100%; height: 100%; object-fit: contain; opacity: 0.7; transition: 0.3s; }
+        
+        /* BOTONES FLOTANTES (HOTSPOTS) EVOLUCIONADOS */
+        .hotspot { position: absolute; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.6); border: 2px solid var(--text-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; z-index: 10; transition: 0.3s; backdrop-filter: blur(2px); }
+        .hotspot i { font-size: 1.1rem; }
+        .hotspot:hover, .hotspot.highlighted { border-color: var(--primary); background: rgba(0, 229, 255, 0.3); transform: scale(1.2); box-shadow: 0 0 20px var(--primary); color: #fff; }
+        .hotspot-label { position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #000; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; opacity: 0; transition: 0.2s; white-space: nowrap; pointer-events: none; }
+        .hotspot:hover .hotspot-label { opacity: 1; bottom: -30px; }
+
+        /* TARJETAS DE SERVICIO */
+        .section-title { color: var(--text-dim); margin: 30px 0 15px 0; border-bottom: 1px solid #333; padding-bottom: 10px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
-        .card { background: var(--bg-panel); padding: 15px; border-radius: 10px; border: 1px solid #333; cursor: pointer; text-align: center; transition: 0.2s; }
-        .card:hover { border-color: var(--primary); transform: translateY(-3px); background: #222; }
-        .card i { font-size: 2rem; color: var(--text-dim); margin-bottom: 10px; display: block; }
+        .card { background: var(--bg-panel); padding: 15px; border-radius: 10px; border: 1px solid #333; cursor: pointer; text-align: center; transition: 0.2s; position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--text-dim); transition: 0.2s; }
+        .card:hover { transform: translateY(-3px); background: #1a1a1a; }
+        .card:hover::before { background: var(--primary); }
+        .card i { font-size: 1.8rem; color: #eee; margin-bottom: 10px; display: block; }
         
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 200; display: none; align-items: center; justify-content: center; }
-        .modal-box { background: #1a212d; width: 90%; max-width: 400px; border-radius: 15px; border: 1px solid var(--primary); overflow: hidden; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        /* MODAL */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-box { background: #151515; width: 95%; max-width: 450px; border-radius: 15px; border: 1px solid #333; overflow: hidden; box-shadow: 0 0 50px rgba(0,0,0,0.8); animation: slideUp 0.3s; }
+        @keyframes slideUp { from {transform:translateY(50px); opacity:0;} to {transform:translateY(0); opacity:1;} }
         .modal-header { padding: 15px; background: #111; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
         .modal-body { padding: 20px; max-height: 60vh; overflow-y: auto; }
         
-        .connector { display: grid; gap: 5px; justify-content: center; background: #222; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-        .pin { width: 30px; height: 30px; border: 1px solid #555; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #777; border-radius: 4px; }
-        .pin.active { background: var(--pin-active); color: #000; font-weight: bold; border-color: #fff; transform: scale(1.1); box-shadow: 0 0 10px var(--pin-active); }
+        /* PINES Y LISTAS */
+        .connector { display: grid; gap: 8px; justify-content: center; background: #222; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333; }
+        .pin { width: 35px; height: 35px; border: 1px solid #555; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #888; border-radius: 6px; background: #111; transition: 0.2s; }
+        .pin.active { background: var(--pin-active); color: #000; font-weight: 800; border-color: #fff; transform: scale(1.15); box-shadow: 0 0 15px var(--pin-active); }
+        .list-item { padding: 12px; border-bottom: 1px solid #333; cursor: pointer; display: flex; align-items: center; transition: 0.2s; border-radius: 6px; }
+        .list-item:hover { background: #222; padding-left: 15px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 15px; border: 2px solid rgba(255,255,255,0.2); }
         
-        .list-item { padding: 10px; border-bottom: 1px solid #333; cursor: pointer; display: flex; align-items: center; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; border: 1px solid #fff; }
-        
-        .step { background: rgba(255,255,255,0.05); margin-bottom: 10px; padding: 15px; border-radius: 8px; display: flex; gap: 10px; }
-        .step.done { opacity: 0.4; border: 1px solid var(--success); }
-        .check { min-width: 25px; height: 25px; border: 2px solid #555; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        /* BOTONES DE PASOS */
+        .step { background: rgba(255,255,255,0.03); margin-bottom: 10px; padding: 15px; border-radius: 8px; display: flex; gap: 15px; border: 1px solid transparent; }
+        .step.done { opacity: 0.5; border-color: var(--success); }
+        .check { min-width: 28px; height: 28px; border: 2px solid #555; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
         .step.done .check { background: var(--success); border-color: var(--success); color: #000; }
-        .timer { background: #ff9800; border: none; padding: 5px 10px; border-radius: 4px; color: #fff; cursor: pointer; margin-top: 5px; font-size: 0.8rem; }
+        .timer { background: #ff9100; color: #000; font-weight: bold; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-top: 8px; display: inline-block; font-size: 0.85rem; }
     </style>
 </head>
 <body>
     <header>
         <div class="brand">AutoDeluK<span>29</span></div>
-        <small style="color:#aaa">V9.0 Pro</small>
+        <div class="version-badge">V10.0 ULTIMATE</div>
     </header>
     
     <div class="filter-area">
         <div class="filter-container">
             <select id="brandSelect" onchange="loadModels()">
-                <option value="">Seleccionar Marca...</option>
-                </select>
-            <select id="modelSelect" disabled>
-                <option value="">Primero la marca...</option>
+                <option value="">1. Marca</option>
             </select>
-            <button class="btn-go" onclick="runFilter()">BUSCAR</button>
+            <select id="modelSelect" disabled>
+                <option value="">2. Modelo y Año</option>
+            </select>
+            <button class="btn-go" onclick="runFilter()"><i class="fas fa-search"></i></button>
         </div>
     </div>
 
     <div id="workspace">
-        <div class="car-header">
-            <div class="car-info">
-                <h2 id="carTitle">Auto</h2>
-                <p id="carYear">Detalles del vehículo</p>
+        <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:10px;">
+            <div>
+                <h2 id="carTitle" style="color:var(--primary); margin:0; text-transform: uppercase;"></h2>
+                <div class="car-badges" id="carBadges">
+                    </div>
             </div>
-            <i class="fas fa-car fa-2x" style="color:#333"></i>
+        </div>
+
+        <div class="dtc-section">
+            <label style="color:var(--text-dim); font-size:0.8rem;"><i class="fas fa-laptop-medical"></i> ESCÁNER DE CÓDIGOS (DTC)</label>
+            <div class="dtc-input-group">
+                <input type="text" id="dtcInput" class="dtc-input" placeholder="Ej: P0300, P0113..." maxlength="5">
+                <button class="btn-dtc" onclick="checkDTC()">SCAN</button>
+            </div>
+            <div id="dtcResult" class="dtc-result"></div>
         </div>
 
         <div class="section-title">Ubicación de Componentes</div>
@@ -102,46 +124,83 @@
             <div id="hotspotContainer"></div>
         </div>
 
-        <div class="section-title">Servicios Disponibles</div>
+        <div class="section-title">Procedimientos y Servicios</div>
         <div class="grid" id="procGrid"></div>
     </div>
 
     <div id="modal" class="modal">
         <div class="modal-box">
             <div class="modal-header">
-                <h3 id="mTitle" style="margin:0">Info</h3>
-                <i class="fas fa-times" onclick="closeModal()" style="cursor:pointer"></i>
+                <h3 id="mTitle" style="margin:0; color:var(--primary)">Título</h3>
+                <i class="fas fa-times" onclick="closeModal()" style="cursor:pointer; padding:5px;"></i>
             </div>
             <div id="mBody" class="modal-body"></div>
         </div>
     </div>
 
     <script>
-        // --- BASE DE DATOS (Estructurada para filtros) ---
+        // --- BASE DE DATOS MAESTRA V10 ---
         const carDB = [
-            { id: "sentra", brand: "Nissan", model: "Sentra", year: "2013-2019", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg/640px-2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg", 
-              components: { "ckp": { title: "CKP (Cigüeñal)", pins: 3, data: [{id:1,hex:"#f00",txt:"12V"},{id:2,hex:"#000",txt:"Masa"},{id:3,hex:"#0f0",txt:"Señal"}] } },
-              procedures: { "oil": { title: "Reset Aceite", steps: [{text:"Ignición ON", time:0},{text:"Menú > Settings", time:0},{text:"Reset", time:0}] } } 
+            { 
+                id: "sentra", brand: "Nissan", model: "Sentra", year: "2013-2019", type: "Sedan", engine: "1.8L", trans: "CVT/Man", 
+                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg/640px-2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg", 
+                components: { 
+                    "ckp": { title: "Sensor CKP", icon: "fa-cog", pins: 3, data: [{id:1,hex:"#f00",txt:"12V Ign"},{id:2,hex:"#000",txt:"Masa"},{id:3,hex:"#0f0",txt:"Señal"}] },
+                    "maf": { title: "Sensor MAF", icon: "fa-wind", pins: 5, data: [{id:1,hex:"#ff0",txt:"IAT"},{id:2,hex:"#000",txt:"Masa"},{id:3,hex:"#f00",txt:"12V"},{id:4,hex:"#0ff",txt:"5V"},{id:5,hex:"#0f0",txt:"Señal"}] }
+                },
+                procedures: { 
+                    "oil": { title: "Vida Aceite", icon: "fa-oil-can", steps: [{text:"Ignición ON", time:0},{text:"Menú > Settings", time:0},{text:"Reset", time:0}] },
+                    "etb": { title: "Aceleración", icon: "fa-tachometer-alt", steps: [{text:"Motor caliente OFF", time:0},{text:"ON 2s, OFF 10s (x2)", time:25},{text:"Arrancar", time:0}] }
+                },
+                dtc: {
+                    "P0335": { desc: "Falla Circuito Sensor CKP", fix: "Revisar arnés o reemplazar sensor CKP.", comp: "ckp" },
+                    "P0101": { desc: "Rango/Desempeño MAF", fix: "Limpiar cuerpo aceleración y sensor MAF.", comp: "maf" }
+                }
             },
-            { id: "corolla", brand: "Toyota", model: "Corolla", year: "2018-2022", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/2020_Toyota_Corolla_LE%2C_front_12.21.19.jpg/640px-2020_Toyota_Corolla_LE%2C_front_12.21.19.jpg",
-              components: { "cmp": { title: "CMP (Levas)", pins: 3, data: [{id:1,hex:"#0ff",txt:"5V"},{id:2,hex:"#0f0",txt:"Señal"},{id:3,hex:"#000",txt:"Masa"}] } },
-              procedures: { "tpms": { title: "Reset TPMS", steps: [{text:"Botón Set", time:3}] } }
+            { 
+                id: "aveo", brand: "Chevrolet", model: "Aveo", year: "2012-2017", type: "Sedan", engine: "1.6L E-TEC", trans: "Manual",
+                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Chevrolet_Aveo_sedan_--_01-05-2010.jpg/640px-Chevrolet_Aveo_sedan_--_01-05-2010.jpg",
+                components: { 
+                    "oxy": { title: "Sonda Lambda 1", icon: "fa-burn", pins: 4, data: [{id:1,hex:"#fff",txt:"Cal+"},{id:2,hex:"#fff",txt:"Cal-"},{id:3,hex:"#888",txt:"Sig-"},{id:4,hex:"#000",txt:"Sig+"}] },
+                    "bob": { title: "Bobina", icon: "fa-bolt", pins: 3, data: [{id:"A",hex:"#f00",txt:"12V"},{id:"B",hex:"#000",txt:"Masa"},{id:"C",hex:"#0f0",txt:"Trigger"}] }
+                },
+                procedures: { 
+                    "iac": { title: "Calib. IAC", icon: "fa-sliders-h", steps: [{text:"Switch ON 10s", time:10},{text:"Switch OFF 10s", time:10}] } 
+                },
+                dtc: {
+                    "P0300": { desc: "Falla de Encendido Aleatoria", fix: "Revisar Bobina y Bujías.", comp: "bob" },
+                    "P0135": { desc: "Falla Calefactor O2 S1", fix: "Fusible de calefactor o sensor dañado.", comp: "oxy" }
+                }
             },
-            { id: "aveo", brand: "Chevrolet", model: "Aveo", year: "2012-2017", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Chevrolet_Aveo_sedan_--_01-05-2010.jpg/640px-Chevrolet_Aveo_sedan_--_01-05-2010.jpg",
-              components: { "oxy": { title: "Sonda Lambda", pins: 4, data: [{id:1,hex:"#fff",txt:"Cal+"},{id:2,hex:"#fff",txt:"Cal-"},{id:3,hex:"#888",txt:"Sig-"},{id:4,hex:"#000",txt:"Sig+"}] } },
-              procedures: { "iac": { title: "Calib. IAC", steps: [{text:"Switch ON 10s", time:10},{text:"Switch OFF 10s", time:10}] } }
+            { 
+                id: "jetta", brand: "Volkswagen", model: "Jetta A4", year: "1999-2015", type: "Sedan", engine: "2.0L", trans: "Auto/Man",
+                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Volkswagen_Jetta_IV_--_08-28-2009.jpg/640px-Volkswagen_Jetta_IV_--_08-28-2009.jpg",
+                components: { 
+                    "ect": { title: "Sensor ECT", icon: "fa-thermometer-half", pins: 4, data: [{id:1,hex:"#8B4513",txt:"Masa"},{id:2,hex:"#00f",txt:"Señal ECU"},{id:3,hex:"#8B4513",txt:"Masa"},{id:4,hex:"#00f",txt:"Señal Tablero"}] }
+                },
+                procedures: { 
+                    "tba": { title: "Cuerpo Acel.", icon: "fa-microchip", steps: [{text:"Canal 060 en VAGCOM", time:0},{text:"Esperar ADP OK", time:5}] } 
+                },
+                dtc: {
+                    "P0118": { desc: "Entrada Alta Circuito ECT", fix: "Sensor desconectado o cable roto.", comp: "ect" }
+                }
             },
-            { id: "jetta", brand: "Volkswagen", model: "Jetta A4", year: "1999-2015", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Volkswagen_Jetta_IV_--_08-28-2009.jpg/640px-Volkswagen_Jetta_IV_--_08-28-2009.jpg",
-              components: { "ect": { title: "Sensor Temp", pins: 4, data: [{id:1,hex:"#8B4513",txt:"Masa"},{id:2,hex:"#00f",txt:"Señal"}] } },
-              procedures: { "tba": { title: "Cuerpo Acel.", steps: [{text:"Canal 060", time:0}] } }
-            },
-            { id: "civic", brand: "Honda", model: "Civic", year: "2012-2015", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/2013_Honda_Civic_sedan_--_05-24-2013.jpg/640px-2013_Honda_Civic_sedan_--_05-24-2013.jpg",
-              components: { "map": { title: "Sensor MAP", pins: 3, data: [{id:1,hex:"#0ff",txt:"5V"},{id:2,hex:"#0f0",txt:"Señal"},{id:3,hex:"#000",txt:"Masa"}] } },
-              procedures: { "oil": { title: "Reset Oil", steps: [{text:"Menú Info", time:0}] } }
+             { 
+                id: "ford_fiesta", brand: "Ford", model: "Fiesta", year: "2011-2019", type: "Hatch/Sedan", engine: "1.6L Ti-VCT", trans: "PowerShift",
+                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/2011_Ford_Fiesta_SE_sedan_--_10-06-2010.jpg/640px-2011_Ford_Fiesta_SE_sedan_--_10-06-2010.jpg",
+                components: { 
+                    "tps": { title: "Cuerpo Acel.", icon: "fa-hockey-puck", pins: 6, data: [{id:1,hex:"#000",txt:"Motor+"},{id:2,hex:"#000",txt:"Motor-"},{id:3,hex:"#000",txt:"Masa"},{id:4,hex:"#000",txt:"5V"},{id:5,hex:"#0f0",txt:"TP1"},{id:6,hex:"#0f0",txt:"TP2"}] }
+                },
+                procedures: { 
+                    "bms": { title: "Reset Batería", icon: "fa-car-battery", steps: [{text:"Ignición ON", time:0},{text:"5 veces Niebla Trasera", time:0},{text:"3 veces Intermitentes", time:0}] } 
+                },
+                dtc: {
+                    "P2135": { desc: "Correlación Voltaje TP A/B", fix: "Cuerpo de aceleración sucio o dañado.", comp: "tps" }
+                }
             }
         ];
 
-        // --- LÓGICA DE FILTROS INTELIGENTES ---
+        // --- SISTEMA DE GESTIÓN ---
         window.onload = function() {
             const brands = [...new Set(carDB.map(c => c.brand))];
             const sel = document.getElementById('brandSelect');
@@ -156,61 +215,105 @@
             const brand = document.getElementById('brandSelect').value;
             const modelSel = document.getElementById('modelSelect');
             modelSel.innerHTML = '<option value="">Seleccionar Modelo...</option>';
+            modelSel.disabled = !brand;
             
             if(brand) {
-                modelSel.disabled = false;
                 const models = carDB.filter(c => c.brand === brand);
                 models.forEach(m => {
                     let opt = document.createElement('option');
                     opt.value = m.id; opt.innerText = `${m.model} (${m.year})`;
                     modelSel.appendChild(opt);
                 });
-            } else {
-                modelSel.disabled = true;
             }
         }
 
         function runFilter() {
             const carId = document.getElementById('modelSelect').value;
-            if(carId) {
-                loadCar(carId);
-            } else {
-                alert("Por favor selecciona una Marca y un Modelo.");
-            }
+            if(carId) loadCar(carId);
+            else alert("Selecciona marca y modelo.");
         }
 
-        // --- LÓGICA DE CARGA Y VISUALIZACIÓN ---
         let currentCar = null;
 
         function loadCar(id) {
             currentCar = carDB.find(c => c.id === id);
             document.getElementById('workspace').style.display = 'block';
+            
+            // Llenar datos encabezado
             document.getElementById('carTitle').innerText = `${currentCar.brand} ${currentCar.model}`;
-            document.getElementById('carYear').innerText = `Generación: ${currentCar.year}`;
+            const badges = document.getElementById('carBadges');
+            badges.innerHTML = `
+                <span class="badge"><i class="fas fa-calendar-alt"></i> ${currentCar.year}</span>
+                <span class="badge"><i class="fas fa-car-side"></i> ${currentCar.type}</span>
+                <span class="badge"><i class="fas fa-cogs"></i> ${currentCar.engine}</span>
+                <span class="badge"><i class="fas fa-random"></i> ${currentCar.trans}</span>
+            `;
+            
             document.getElementById('carImg').src = currentCar.img;
+            document.getElementById('dtcResult').style.display = 'none';
+            document.getElementById('dtcInput').value = '';
 
-            // Hotspots
-            const hsContainer = document.getElementById('hotspotContainer');
-            hsContainer.innerHTML = "";
-            const positions = [{top: '30%', left: '40%'}, {top: '50%', left: '60%'}, {top: '20%', left: '70%'}, {top: '60%', left: '30%'}];
-            let i = 0;
-            for(const [compId, compData] of Object.entries(currentCar.components)) {
-                const pos = positions[i] || {top: '50%', left: '50%'};
-                hsContainer.innerHTML += `<div class="hotspot" style="top:${pos.top}; left:${pos.left}" onclick="openPinout('${compId}')"><i class="fas fa-bolt"></i></div>`;
-                i++;
-            }
+            // Renderizar Hotspots
+            renderHotspots();
 
-            // Procedimientos
+            // Renderizar Procedimientos
             const procGrid = document.getElementById('procGrid');
             procGrid.innerHTML = "";
             if(currentCar.procedures) {
                 for(const [procId, procData] of Object.entries(currentCar.procedures)) {
-                    procGrid.innerHTML += `<div class="card" onclick="openProcedure('${procId}')"><i class="fas fa-cogs"></i><div>${procData.title}</div></div>`;
+                    procGrid.innerHTML += `<div class="card" onclick="openProcedure('${procId}')"><i class="fas ${procData.icon || 'fa-cogs'}"></i><div>${procData.title}</div></div>`;
                 }
             }
         }
 
-        // --- FUNCIONES MODALES ---
+        function renderHotspots(highlightComp = null) {
+            const hsContainer = document.getElementById('hotspotContainer');
+            hsContainer.innerHTML = "";
+            const positions = [{top: '30%', left: '40%'}, {top: '50%', left: '60%'}, {top: '20%', left: '70%'}, {top: '60%', left: '30%'}];
+            let i = 0;
+            
+            for(const [compId, compData] of Object.entries(currentCar.components)) {
+                const pos = positions[i] || {top: '50%', left: '50%'};
+                const isHigh = highlightComp === compId ? 'highlighted' : '';
+                hsContainer.innerHTML += `
+                    <div class="hotspot ${isHigh}" style="top:${pos.top}; left:${pos.left}" onclick="openPinout('${compId}')">
+                        <i class="fas ${compData.icon || 'fa-bolt'}"></i>
+                        <span class="hotspot-label">${compData.title}</span>
+                    </div>`;
+                i++;
+            }
+        }
+
+        // --- SISTEMA INTELIGENTE DE DTC ---
+        function checkDTC() {
+            const code = document.getElementById('dtcInput').value.toUpperCase().trim();
+            const resultBox = document.getElementById('dtcResult');
+            
+            if(currentCar.dtc && currentCar.dtc[code]) {
+                const info = currentCar.dtc[code];
+                resultBox.style.display = 'block';
+                resultBox.style.borderColor = 'var(--danger)';
+                resultBox.style.color = '#fff';
+                resultBox.innerHTML = `
+                    <strong style="color:var(--danger)">${code} DETECTADO:</strong><br>
+                    ${info.desc}<br><br>
+                    <i class="fas fa-tools"></i> <strong>Sugerencia:</strong> ${info.fix}
+                `;
+                // Iluminar el componente culpable
+                if(info.comp) {
+                    renderHotspots(info.comp);
+                    alert(`⚠️ EL CÓDIGO ${code} ESTÁ RELACIONADO CON: ${currentCar.components[info.comp].title}.\n\nRevisa el componente resaltado.`);
+                }
+            } else {
+                resultBox.style.display = 'block';
+                resultBox.style.borderColor = 'var(--warning)';
+                resultBox.style.color = '#ccc';
+                resultBox.innerHTML = `El código ${code} no está en la base de datos de este auto específico o no aplica.`;
+                renderHotspots(); // Limpiar resaltado
+            }
+        }
+
+        // --- MODALES Y LÓGICA DE PINES ---
         function openPinout(compId) {
             const comp = currentCar.components[compId];
             const modal = document.getElementById('modal');
