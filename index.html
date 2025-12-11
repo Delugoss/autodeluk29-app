@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoDeluK29 - Master V12</title>
+    <title>AutoDeluK29 - Master V12.1</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         /* ESTÉTICA NEON CORE (Intacta) */
@@ -15,14 +15,16 @@
         .brand { font-size: 1.4rem; font-weight: 900; letter-spacing: 1px; } .brand span { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         .badge { background: #111; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; border: 1px solid var(--primary); }
 
-        /* ZONA DE FILTROS (ORDEN: MARCA -> AÑO -> MODELO) */
+        /* ZONA DE FILTROS */
         .filter-area { padding: 25px 15px; background: radial-gradient(circle at top, #1a1a1a 0%, #000 100%); border-bottom: 1px solid #333; }
         .filter-container { display: flex; flex-direction: column; gap: 10px; max-width: 600px; margin: 0 auto; }
         
-        .select-group { display: flex; align-items: center; background: #080808; border: 1px solid #333; border-radius: 8px; padding: 0 10px; }
+        .select-group { display: flex; align-items: center; background: #080808; border: 1px solid #333; border-radius: 8px; padding: 0 10px; transition: 0.3s; }
+        .select-group:hover { border-color: var(--primary); }
         .select-group i { color: var(--dim); margin-right: 10px; }
         select { width: 100%; padding: 14px 5px; background: transparent; border: none; color: #fff; font-size: 1rem; outline: none; }
-        select:disabled { opacity: 0.5; }
+        select:disabled { opacity: 0.5; cursor: not-allowed; }
+        option { background: #111; color: #fff; } /* Fondo negro para las opciones */
         
         .btn-go { background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; transition: 0.2s; }
         .btn-go:hover { box-shadow: 0 0 20px var(--primary); transform: scale(1.02); }
@@ -40,7 +42,7 @@
         .hotspot:hover { border-color: var(--primary); background: rgba(0,229,255,0.2); transform: scale(1.2); box-shadow: 0 0 15px var(--primary); }
         .hotspot i { font-size: 1.2rem; }
 
-        /* MODAL DE INGENIERÍA (TABBED INTERFACE) */
+        /* MODAL DE INGENIERÍA */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 200; display: none; align-items: center; justify-content: center; }
         .modal-box { background: #111; width: 95%; max-width: 500px; height: 85vh; border-radius: 15px; border: 1px solid var(--primary); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 40px rgba(0,229,255,0.15); }
         
@@ -70,14 +72,13 @@
         .info-label { color: var(--dim); font-size: 0.8rem; text-transform: uppercase; display: block; margin-bottom: 5px; }
         .info-text { color: #fff; font-size: 0.95rem; line-height: 1.5; }
 
-        /* BOTON CERRAR */
         .close-btn { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
     </style>
 </head>
 <body>
     <header>
         <div class="brand">AutoDeluK<span>29</span></div>
-        <div class="badge">V12 MASTER</div>
+        <div class="badge">V12.1 MASTER</div>
     </header>
     
     <div class="filter-area">
@@ -118,7 +119,7 @@
         </div>
         
         <div style="text-align:center; color:#555; font-size:0.8rem; margin-top:10px;">
-            <i class="fas fa-info-circle"></i> Toca un componente (punto) para ver Pinout y Pruebas.
+            <i class="fas fa-info-circle"></i> Selecciona un componente para ver detalles técnicos.
         </div>
     </div>
 
@@ -175,7 +176,7 @@
     </div>
 
     <script>
-        // --- BASE DE DATOS ESTRUCTURADA POR RANGOS DE AÑOS ---
+        // --- BASE DE DATOS ESTRUCTURADA ---
         const carDB = [
             {
                 id: "sentra_b17",
@@ -186,11 +187,9 @@
                         title: "Sensor CKP (Cigüeñal)",
                         icon: "fa-cog",
                         pos: {top: '40%', left: '45%'},
-                        // 6. Función y 9. Ubicación
                         desc: "Monitorea la posición de los pistones y la velocidad del motor. Ubicado en la parte trasera del motor, lado pared de fuego.",
                         faults: "Auto no arranca, se apaga en marcha, Código P0335.",
                         fix: "Revisar conector, suele llenarse de aceite. Medir resistencia. Reemplazar si no hay señal.",
-                        // 7. Pines y 8. Valores
                         pins: [
                             {id:"1", txt:"12V Alimentación (Ignición)", color:"#ff0000"},
                             {id:"2", txt:"Tierra (Masa de Sensores)", color:"#000000"},
@@ -251,11 +250,11 @@
             }
         ];
 
-        // --- LÓGICA DE FILTROS V12 (AÑO PRIMERO) ---
+        // --- LÓGICA DE CARGA ---
         let selectedCar = null;
 
         window.onload = function() {
-            // 1. Llenar Marcas
+            // Llenar Marcas
             const brands = [...new Set(carDB.map(c => c.brand))];
             const sel = document.getElementById('brandSelect');
             brands.forEach(b => {
@@ -266,18 +265,18 @@
         };
 
         function loadYears() {
-            // 2. Generar Años (1990 - 2026)
             const yearSel = document.getElementById('yearSelect');
             yearSel.innerHTML = '<option value="">2. Seleccionar Año</option>';
             yearSel.disabled = false;
             
-            // Llenar del 2026 al 1990
-            for(let y = 2026; y >= 1990; y--) {
+            // --- AQUÍ ESTÁ EL CAMBIO CRONOLÓGICO (1990 -> 2026) ---
+            for(let y = 1990; y <= 2026; y++) {
                 let opt = document.createElement('option');
                 opt.value = y; opt.innerText = y;
                 yearSel.appendChild(opt);
             }
             
+            // Resetear siguientes
             document.getElementById('modelSelect').innerHTML = '<option value="">3. Seleccionar Modelo</option>';
             document.getElementById('modelSelect').disabled = true;
             document.getElementById('btnSearch').disabled = true;
@@ -291,7 +290,6 @@
             modelSel.innerHTML = '<option value="">3. Seleccionar Modelo</option>';
             modelSel.disabled = false;
 
-            // FILTRADO INTELIGENTE: Coincidir Marca y Rango de Años
             const compatibleCars = carDB.filter(c => c.brand === brand && year >= c.minYear && year <= c.maxYear);
             
             if(compatibleCars.length > 0) {
@@ -320,7 +318,7 @@
 
             document.getElementById('workspace').style.display = 'block';
             document.getElementById('carTitle').innerText = `${selectedCar.brand} ${selectedCar.model}`;
-            document.getElementById('carSubtitle').innerText = `MODELO AÑO ${year} | MOTORIZACIÓN COMPATIBLE`;
+            document.getElementById('carSubtitle').innerText = `MODELO AÑO ${year}`;
             document.getElementById('carImg').src = selectedCar.img;
 
             // Renderizar Hotspots
@@ -335,14 +333,14 @@
             }
         }
 
-        // --- LÓGICA DEL SUPER MODAL ---
+        // --- SISTEMA DE PESTAÑAS (TABS) ---
         function openComponent(compId) {
             const comp = selectedCar.components[compId];
             const modal = document.getElementById('modal');
             document.getElementById('mTitle').innerText = comp.title;
             modal.style.display = "flex";
 
-            // 1. Pestaña PINOUT
+            // Pestaña 1: PINOUT
             let pinHtml = "";
             comp.pins.forEach(p => {
                 pinHtml += `
@@ -356,29 +354,25 @@
             });
             document.getElementById('pinoutList').innerHTML = pinHtml;
 
-            // 2. Pestaña VALORES
+            // Pestaña 2: VALORES
             let specHtml = "";
             comp.tests.forEach(t => {
                 specHtml += `<tr><td>${t.type}</td><td><span class="val-badge">${t.val}</span></td></tr>`;
             });
             document.getElementById('specsTable').innerHTML = specHtml;
 
-            // 3. Pestaña INFO
+            // Pestaña 3: INFO
             document.getElementById('funcText').innerText = comp.desc;
             document.getElementById('failText').innerText = comp.faults;
             document.getElementById('fixText').innerText = comp.fix;
 
-            // Resetear a Pestaña 1
+            // Iniciar en Pestaña 1
             switchTab('tab1', document.querySelector('.tab')); 
         }
 
         function switchTab(tabId, tabElement) {
-            // Ocultar todos los contenidos
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            // Desactivar todos los botones
             document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-            
-            // Activar el seleccionado
             document.getElementById(tabId).classList.add('active');
             if(tabElement) tabElement.classList.add('active');
         }
