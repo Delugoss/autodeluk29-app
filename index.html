@@ -1,93 +1,3 @@
-
-
-JavaScript
-
-/* ARCHIVO DE BASE DE DATOS - AutoDeluK29
-   Aquí es donde agregarás todos los autos nuevos.
-*/
-
-const database = {
-    // --- TOYOTA ---
-    "corolla": {
-        name: "Toyota Corolla 2020 (1.8L)",
-        img: "https://images.unsplash.com/photo-1621007947382-bb3c3968e3bb?auto=format&fit=crop&w=1600&q=80", // Foto Motor Corolla
-        components: {
-            "maf": { 
-                title: "Sensor MAF (Flujo Aire)", 
-                pins: 5, 
-                data: [
-                    {id:1, txt:"+B (12V)", hex:"#ff0000"}, 
-                    {id:2, txt:"Vacío", hex:"#444"},
-                    {id:3, txt:"VG (Señal)", hex:"#ffff00"},
-                    {id:4, txt:"THA (Temp)", hex:"#00ff00"},
-                    {id:5, txt:"E2 (Masa)", hex:"#ffffff"}
-                ] 
-            },
-            "alt": {
-                title: "Alternador (Regulador)",
-                pins: 4,
-                data: [
-                    {id:1, txt:"S (Sense)", hex:"#ffffff"},
-                    {id:2, txt:"IG (Ignición)", hex:"#ff0000"},
-                    {id:3, txt:"M (Monitor)", hex:"#ffff00"},
-                    {id:4, txt:"L (Lámpara)", hex:"#0000ff"}
-                ]
-            }
-        },
-        procedures: {
-            "throttle": {
-                title: "Aprendizaje Cuerpo Aceleración",
-                steps: [
-                    { text: "Motor apagado. Llave en ON.", time: 0 },
-                    { text: "Espere 30 seg sin tocar pedal.", time: 30 },
-                    { text: "Gire a OFF y espere.", time: 10 },
-                    { text: "Encienda el motor.", time: 0 }
-                ]
-            }
-        }
-    },
-
-    // --- NISSAN (NUEVO EJEMPLO) ---
-    "sentra": {
-        name: "Nissan Sentra B17 (1.8L)",
-        img: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1600&q=80", // Foto Motor Nissan
-        components: {
-            "maf": {
-                title: "Sensor MAF (Nissan)",
-                pins: 4, // Nissan usa 4 pines a veces
-                data: [
-                    {id:1, txt:"Alimentación 12V", hex:"#ff0000"},
-                    {id:2, txt:"Masa", hex:"#000000"},
-                    {id:3, txt:"Señal MAF 0-5V", hex:"#ffff00"},
-                    {id:4, txt:"Señal IAT", hex:"#0000ff"}
-                ]
-            },
-            "ckp": { // Nuevo componente: Sensor Cigüeñal
-                title: "Sensor CKP (Cigüeñal)",
-                pins: 3,
-                data: [
-                    {id:1, txt:"VCC (5V)", hex:"#ffa500"},
-                    {id:2, txt:"Señal", hex:"#ffff00"},
-                    {id:3, txt:"GND", hex:"#000000"}
-                ]
-            }
-        },
-        procedures: {
-            "oil": { // Procedimiento diferente
-                title: "Reset Vida de Aceite",
-                steps: [
-                    { text: "Poner llave en ON.", time: 0 },
-                    { text: "Ir a Menú > Mantenimiento.", time: 0 },
-                    { text: "Seleccionar Reset y confirmar.", time: 0 },
-                    { text: "Apagar llave 10 seg.", time: 10 }
-                ]
-            }
-        }
-    }
-};
-
-HTML
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -333,4 +243,5 @@ JavaScript
    motor: "MR20DD",
    diagramas: { ... },
    fallas: { ... }
+
 }
