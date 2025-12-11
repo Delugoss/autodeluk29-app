@@ -3,217 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoDeluK29 - Precision V11</title>
+    <title>AutoDeluK29 - Master V12</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* ESTÉTICA NEON CORE */
-        :root { --primary: #00e5ff; --bg-body: #050505; --bg-panel: #0e0e0e; --text: #fff; --text-dim: #aaa; --success: #00e676; --danger: #ff1744; --warning: #ffea00; }
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg-body); color: var(--text); margin: 0; padding-bottom: 100px; }
+        /* ESTÉTICA NEON CORE (Intacta) */
+        :root { --primary: #00e5ff; --bg-body: #050505; --bg-panel: #121212; --text: #fff; --dim: #888; --success: #00e676; --danger: #ff1744; --warn: #ffea00; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg-body); color: var(--text); margin: 0; padding-bottom: 80px; }
         
         /* HEADER */
-        header { background: rgba(10, 10, 10, 0.95); padding: 15px 20px; border-bottom: 2px solid #222; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); box-shadow: 0 5px 20px rgba(0,0,0,0.8); }
+        header { background: rgba(10,10,10,0.98); padding: 15px 20px; border-bottom: 2px solid #222; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.8); }
         .brand { font-size: 1.4rem; font-weight: 900; letter-spacing: 1px; } .brand span { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-        .version-badge { background: #111; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; border: 1px solid var(--primary); box-shadow: 0 0 5px var(--primary); }
+        .badge { background: #111; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; border: 1px solid var(--primary); }
 
-        /* ZONA DE FILTROS TRIPLE (LO NUEVO) */
-        .filter-area { padding: 20px; background: radial-gradient(circle at top, #1a1a1a 0%, #000 100%); border-bottom: 1px solid #333; }
-        .filter-container { display: flex; gap: 8px; flex-direction: column; max-width: 600px; margin: 0 auto; }
+        /* ZONA DE FILTROS (ORDEN: MARCA -> AÑO -> MODELO) */
+        .filter-area { padding: 25px 15px; background: radial-gradient(circle at top, #1a1a1a 0%, #000 100%); border-bottom: 1px solid #333; }
+        .filter-container { display: flex; flex-direction: column; gap: 10px; max-width: 600px; margin: 0 auto; }
         
-        select { padding: 14px; background: #080808; border: 1px solid #333; color: #fff; border-radius: 8px; font-weight: 500; outline: none; transition: 0.3s; font-size: 1rem; }
-        select:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0,229,255,0.15); background: #111; }
-        select:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        .btn-go { background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
-        .btn-go:hover { background: #fff; box-shadow: 0 0 20px var(--primary); transform: translateY(-2px); }
-
-        /* AREA DE TRABAJO */
-        #workspace { max-width: 1000px; margin: 0 auto; padding: 20px; display: none; animation: slideIn 0.4s ease; }
-        @keyframes slideIn { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
-
-        /* FICHA TÉCNICA */
-        .tech-specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-top: 10px; }
-        .spec-box { background: #111; border: 1px solid #333; padding: 8px; border-radius: 6px; text-align: center; }
-        .spec-box small { display: block; color: var(--text-dim); font-size: 0.7rem; }
-        .spec-box strong { color: var(--primary); font-size: 0.9rem; }
-
-        /* ESCÁNER DTC AVANZADO */
-        .dtc-section { margin: 25px 0; background: linear-gradient(145deg, #111, #0a0a0a); padding: 20px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .dtc-title { color: var(--text-dim); font-size: 0.8rem; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .dtc-input-group { display: flex; gap: 10px; position: relative; }
-        .dtc-input { flex: 1; background: #000; border: 2px solid #333; color: var(--danger); font-family: monospace; font-size: 1.4rem; padding: 12px; border-radius: 8px; text-transform: uppercase; font-weight: bold; letter-spacing: 2px; }
-        .dtc-input:focus { border-color: var(--danger); outline: none; box-shadow: 0 0 15px rgba(255, 23, 68, 0.2); }
-        .btn-scan { background: #222; color: var(--danger); border: 2px solid var(--danger); padding: 0 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .btn-scan:active { transform: scale(0.95); }
-
-        .dtc-result { display: none; margin-top: 15px; padding: 15px; background: rgba(20, 0, 0, 0.8); border-left: 4px solid var(--danger); border-radius: 0 8px 8px 0; }
-        .dtc-code { font-size: 1.5rem; font-weight: 900; color: var(--danger); display: block; margin-bottom: 5px; }
-        .dtc-desc { font-weight: bold; color: #fff; margin-bottom: 10px; display: block; }
-        .dtc-details { font-size: 0.9rem; color: #ccc; line-height: 1.5; }
-        .dtc-fix { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); color: var(--success); }
-
-        /* VISOR NEON */
-        .viewer { position: relative; height: 350px; background: #000; border-radius: 12px; border: 1px solid #333; overflow: hidden; margin: 20px 0; }
-        .viewer img { width: 100%; height: 100%; object-fit: contain; opacity: 0.8; }
+        .select-group { display: flex; align-items: center; background: #080808; border: 1px solid #333; border-radius: 8px; padding: 0 10px; }
+        .select-group i { color: var(--dim); margin-right: 10px; }
+        select { width: 100%; padding: 14px 5px; background: transparent; border: none; color: #fff; font-size: 1rem; outline: none; }
+        select:disabled { opacity: 0.5; }
         
-        .hotspot { position: absolute; width: 45px; height: 45px; background: rgba(0,0,0,0.7); border: 2px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; z-index: 10; transition: 0.3s; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .btn-go { background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; transition: 0.2s; }
+        .btn-go:hover { box-shadow: 0 0 20px var(--primary); transform: scale(1.02); }
+
+        /* WORKSPACE */
+        #workspace { max-width: 1000px; margin: 0 auto; padding: 20px; display: none; }
+        .car-title { color: var(--primary); text-transform: uppercase; margin: 0; font-size: 1.6rem; text-shadow: 0 0 10px rgba(0,229,255,0.3); }
+        .car-subtitle { color: var(--dim); margin-bottom: 15px; font-size: 0.9rem; }
+
+        /* VISOR DE COMPONENTES */
+        .viewer { position: relative; height: 350px; background: #000; border-radius: 12px; border: 1px solid #333; overflow: hidden; margin: 20px 0; box-shadow: inset 0 0 50px #000; }
+        .viewer img { width: 100%; height: 100%; object-fit: contain; opacity: 0.7; }
+        
+        .hotspot { position: absolute; width: 40px; height: 40px; background: rgba(0,0,0,0.6); border: 2px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; z-index: 10; transition: 0.3s; }
+        .hotspot:hover { border-color: var(--primary); background: rgba(0,229,255,0.2); transform: scale(1.2); box-shadow: 0 0 15px var(--primary); }
         .hotspot i { font-size: 1.2rem; }
-        .hotspot:hover { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 25px var(--primary); transform: scale(1.1); background: #000; }
-        /* Animación para cuando el DTC encuentra algo */
-        .hotspot.alert-mode { border-color: var(--danger); color: var(--danger); animation: pulseRed 1.5s infinite; background: rgba(50,0,0,0.8); }
-        @keyframes pulseRed { 0% {box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.7);} 100% {box-shadow: 0 0 0 20px rgba(255, 23, 68, 0);} }
 
-        /* TARJETAS */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
-        .card { background: var(--bg-panel); padding: 20px; border-radius: 12px; border: 1px solid #333; cursor: pointer; text-align: center; transition: 0.3s; }
-        .card:hover { border-color: var(--primary); transform: translateY(-5px); background: #151515; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .card i { font-size: 2rem; color: #ccc; margin-bottom: 10px; display: block; transition: 0.3s; }
-        .card:hover i { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-        
-        /* MODAL */
+        /* MODAL DE INGENIERÍA (TABBED INTERFACE) */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 200; display: none; align-items: center; justify-content: center; }
-        .modal-box { background: #111; width: 95%; max-width: 500px; border-radius: 15px; border: 1px solid var(--primary); overflow: hidden; box-shadow: 0 0 50px rgba(0,229,255,0.2); }
-        .modal-header { padding: 15px 20px; background: #080808; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
-        .modal-body { padding: 25px; max-height: 70vh; overflow-y: auto; }
+        .modal-box { background: #111; width: 95%; max-width: 500px; height: 85vh; border-radius: 15px; border: 1px solid var(--primary); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 40px rgba(0,229,255,0.15); }
+        
+        .modal-header { padding: 15px; background: #080808; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { margin: 0; color: var(--primary); font-size: 1.2rem; }
+        
+        /* PESTAÑAS (TABS) */
+        .tabs { display: flex; background: #1a1a1a; border-bottom: 1px solid #333; }
+        .tab { flex: 1; padding: 15px 0; text-align: center; color: #888; cursor: pointer; font-size: 0.8rem; font-weight: bold; border-bottom: 3px solid transparent; transition: 0.2s; }
+        .tab.active { color: #fff; border-bottom-color: var(--primary); background: #222; }
+        .tab i { display: block; font-size: 1.2rem; margin-bottom: 5px; }
 
-        /* PINES DETALLADOS */
-        .connector-wrapper { text-align: center; margin-bottom: 20px; }
-        .connector { display: inline-grid; gap: 6px; padding: 15px; background: #222; border-radius: 8px; border: 2px solid #444; }
-        .pin { width: 30px; height: 30px; background: #111; border: 1px solid #555; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #777; border-radius: 4px; }
-        .pin.active { background: var(--pin-active); color: #000; font-weight: bold; border-color: #fff; transform: scale(1.2); box-shadow: 0 0 15px var(--pin-active); z-index: 5; }
+        .tab-content { padding: 20px; overflow-y: auto; flex: 1; display: none; }
+        .tab-content.active { display: block; }
 
-        .list-item { padding: 12px; border-bottom: 1px solid #222; display: flex; align-items: center; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
-        .list-item:hover { background: #1a1a1a; padding-left: 10px; }
-        .color-dot { width: 14px; height: 14px; border-radius: 50%; margin-right: 15px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        /* CONTENIDO DE PESTAÑAS */
+        .pinout-grid { display: grid; gap: 10px; justify-content: center; margin-bottom: 20px; }
+        .pin-box { background: #222; border: 1px solid #444; padding: 10px; border-radius: 6px; display: flex; align-items: center; gap: 15px; }
+        .pin-number { width: 30px; height: 30px; background: #000; color: var(--primary); border: 1px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0; }
+        
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .data-table th, .data-table td { text-align: left; padding: 10px; border-bottom: 1px solid #333; }
+        .data-table th { color: var(--primary); }
+        .val-badge { background: #222; padding: 3px 8px; border-radius: 4px; border: 1px solid #444; font-family: monospace; color: var(--warn); }
+
+        .info-block { margin-bottom: 20px; border-left: 3px solid var(--primary); padding-left: 15px; }
+        .info-label { color: var(--dim); font-size: 0.8rem; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .info-text { color: #fff; font-size: 0.95rem; line-height: 1.5; }
+
+        /* BOTON CERRAR */
+        .close-btn { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
     </style>
 </head>
 <body>
     <header>
         <div class="brand">AutoDeluK<span>29</span></div>
-        <div class="version-badge">V11 PRECISION</div>
+        <div class="badge">V12 MASTER</div>
     </header>
     
     <div class="filter-area">
         <div class="filter-container">
-            <select id="brandSelect" onchange="loadModels()">
-                <option value="">1. Seleccionar Marca...</option>
-            </select>
-            <select id="modelSelect" onchange="loadVersions()" disabled>
-                <option value="">2. Seleccionar Modelo...</option>
-            </select>
-            <select id="versionSelect" disabled>
-                <option value="">3. Año / Motorización...</option>
-            </select>
+            <div class="select-group">
+                <i class="fas fa-car"></i>
+                <select id="brandSelect" onchange="loadYears()">
+                    <option value="">1. Seleccionar Marca</option>
+                </select>
+            </div>
             
-            <button id="btnSearch" class="btn-go" onclick="runFilter()" disabled>ACCEDER A DATOS</button>
+            <div class="select-group">
+                <i class="fas fa-calendar-alt"></i>
+                <select id="yearSelect" onchange="loadModels()" disabled>
+                    <option value="">2. Seleccionar Año</option>
+                </select>
+            </div>
+
+            <div class="select-group">
+                <i class="fas fa-list"></i>
+                <select id="modelSelect" onchange="enableButton()" disabled>
+                    <option value="">3. Seleccionar Modelo</option>
+                </select>
+            </div>
+            
+            <button id="btnSearch" class="btn-go" onclick="runApp()" disabled>INGRESAR AL SISTEMA</button>
         </div>
     </div>
 
     <div id="workspace">
-        <h2 id="carTitle" style="color:var(--primary); margin:0; text-transform: uppercase; font-size:1.5rem;"></h2>
-        <div class="tech-specs" id="techSpecs">
-            </div>
+        <h1 id="carTitle" class="car-title"></h1>
+        <div id="carSubtitle" class="car-subtitle"></div>
 
-        <div class="dtc-section">
-            <div class="dtc-title"><i class="fas fa-microchip"></i> ESCÁNER DE CÓDIGOS (OBDII & OEM)</div>
-            <div class="dtc-input-group">
-                <input type="text" id="dtcInput" class="dtc-input" placeholder="Ej: P0300" maxlength="5">
-                <button class="btn-scan" onclick="checkDTC()">DIAGNOSTICAR</button>
-            </div>
-            <div id="dtcResult" class="dtc-result"></div>
-        </div>
-
-        <div class="section-title">DIAGRAMA DE COMPONENTES</div>
+        <div class="section-title" style="color:#aaa; border-bottom:1px solid #333; margin-bottom:10px;">UBICACIÓN DE COMPONENTES</div>
         <div class="viewer">
             <img id="carImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3202/3202926.png'">
             <div id="hotspotContainer"></div>
         </div>
-
-        <div class="section-title">PROCEDIMIENTOS Y APRENDIZAJES</div>
-        <div class="grid" id="procGrid"></div>
+        
+        <div style="text-align:center; color:#555; font-size:0.8rem; margin-top:10px;">
+            <i class="fas fa-info-circle"></i> Toca un componente (punto) para ver Pinout y Pruebas.
+        </div>
     </div>
 
     <div id="modal" class="modal">
         <div class="modal-box">
             <div class="modal-header">
-                <h3 id="mTitle" style="margin:0; color:var(--primary)">Datos Técnicos</h3>
-                <i class="fas fa-times" onclick="closeModal()" style="cursor:pointer; font-size:1.2rem; color:#fff;"></i>
+                <h3 id="mTitle" class="modal-title">Componente</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
-            <div id="mBody" class="modal-body"></div>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('tab1', this)">
+                    <i class="fas fa-plug"></i> PINOUT
+                </div>
+                <div class="tab" onclick="switchTab('tab2', this)">
+                    <i class="fas fa-bolt"></i> PRUEBAS
+                </div>
+                <div class="tab" onclick="switchTab('tab3', this)">
+                    <i class="fas fa-book-medical"></i> INFO
+                </div>
+            </div>
+
+            <div id="tab1" class="tab-content active">
+                <div style="text-align:center; margin-bottom:15px; color:#aaa;">Vista Frontal del Conector (Arnés)</div>
+                <div id="pinoutList" class="pinout-grid"></div>
+            </div>
+
+            <div id="tab2" class="tab-content">
+                <table class="data-table">
+                    <thead><tr><th>Medición</th><th>Valor Esperado</th></tr></thead>
+                    <tbody id="specsTable"></tbody>
+                </table>
+                <div style="margin-top:20px; font-size:0.85rem; color:#aaa;">
+                    * Realizar pruebas con multímetro en escala adecuada.<br>
+                    * Verificar continuidad de cables a la ECU.
+                </div>
+            </div>
+
+            <div id="tab3" class="tab-content">
+                <div class="info-block">
+                    <span class="info-label">Función</span>
+                    <div id="funcText" class="info-text"></div>
+                </div>
+                <div class="info-block" style="border-left-color: var(--danger);">
+                    <span class="info-label">Fallas Comunes</span>
+                    <div id="failText" class="info-text"></div>
+                </div>
+                <div class="info-block" style="border-left-color: var(--success);">
+                    <span class="info-label">Solución / Reparación</span>
+                    <div id="fixText" class="info-text"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- BIBLIOTECA UNIVERSAL DE CÓDIGOS DTC (FALLBACK) ---
-        // Esto se usa si el auto específico no tiene el código definido.
-        const UNIVERSAL_DTC = {
-            "P0300": { desc: "Fallo de Encendido Múltiple/Aleatorio", cause: "Bujías, Bobinas, Fuga de vacío, Baja presión combustible.", fix: "Revisar sistema de encendido y presión de riel." },
-            "P0171": { desc: "Sistema Muy Pobre (Banco 1)", cause: "Fuga de vacío, Sensor MAF sucio, Bomba gasolina débil.", fix: "Limpiar MAF, revisar fugas en admisión." },
-            "P0172": { desc: "Sistema Muy Rico (Banco 1)", cause: "Inyectores goteando, MAF dañado, Alta presión gasolina.", fix: "Revisar regulador presión e inyectores." },
-            "P0420": { desc: "Eficiencia Catalizador Baja (Banco 1)", cause: "Catalizador dañado, Sensores de O2 lentos.", fix: "Revisar gráficas de O2, posible cambio de catalizador." },
-            "P0113": { desc: "Circuito IAT Alto (Temp. Aire)", cause: "Sensor desconectado o circuito abierto.", fix: "Revisar arnés del sensor IAT/MAF." },
-            "P0507": { desc: "RPM en Ralentí Altas", cause: "Cuerpo aceleración sucio, fuga vacío grande.", fix: "Limpieza y calibración de cuerpo aceleración." }
-        };
-
-        // --- BASE DE DATOS DE AUTOS (SEPARADA POR VERSIONES) ---
-        // Fíjate cómo agrupamos los años: "1999-2005"
+        // --- BASE DE DATOS ESTRUCTURADA POR RANGOS DE AÑOS ---
         const carDB = [
-            { 
-                id: "nissan_sentra_b17", 
-                brand: "Nissan", model: "Sentra", version: "2013-2019 (Motor 1.8L)", 
-                engine: "MRA8DE 1.8L", trans: "CVT Xtronic / 6MT", ecu: "Hitachi",
+            {
+                id: "sentra_b17",
+                brand: "Nissan", model: "Sentra", minYear: 2013, maxYear: 2019,
                 img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg/800px-2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg",
                 components: {
-                    "ckp": { title: "Sensor CKP (POS)", icon: "fa-cog", pins: 3, data: [ {id:1,hex:"#f00",txt:"12V (Fusible IPDM)"}, {id:2,hex:"#000",txt:"Masa E14"}, {id:3,hex:"#0f0",txt:"Señal a ECU Pin 85"} ] },
-                    "maf": { title: "Sensor MAF/IAT", icon: "fa-wind", pins: 5, data: [ {id:1,hex:"#ff0",txt:"Señal IAT"}, {id:2,hex:"#000",txt:"Masa Electrónica"}, {id:3,hex:"#f00",txt:"12V Batería"}, {id:4,hex:"#0ff",txt:"5V Referencia"}, {id:5,hex:"#0f0",txt:"Señal Flujo Aire"} ] },
-                    "app": { title: "Pedal Acelerador", icon: "fa-shoe-prints", pins: 6, data: [ {id:1,hex:"#0ff",txt:"5V (APP2)"}, {id:2,hex:"#0f0",txt:"Señal APP2"}, {id:3,hex:"#000",txt:"Masa APP2"}, {id:4,hex:"#000",txt:"Masa APP1"}, {id:5,hex:"#0f0",txt:"Señal APP1"}, {id:6,hex:"#0ff",txt:"5V (APP1)"} ] }
-                },
-                procedures: {
-                    "idle": { title: "Aprendizaje Ralentí", icon: "fa-stopwatch", steps: [{text:"Motor temp. normal. Apagar.",time:0},{text:"ON 2 seg -> OFF 10 seg.",time:12},{text:"ON 2 seg -> OFF 10 seg.",time:12},{text:"Arrancar y dejar en ralentí.",time:20}] },
-                    "oil": { title: "Reset Aceite", icon: "fa-oil-can", steps: [{text:"Ignición ON.",time:0},{text:"Botón Cuadrado volante -> Settings.",time:0},{text:"Maintenance -> Oil -> Reset.",time:0}] }
-                },
-                // Códigos ESPECÍFICOS de Nissan (Si no está aquí, busca en Universal)
-                dtc_specific: {
-                    "P0101": { desc: "Rango MAF (Muy común)", fix: "Limpiar cuerpo aceleración. Si persiste, reprogramar ECU (Boletín Técnico Nissan).", comp: "maf" },
-                    "P0335": { desc: "Circuito Sensor CKP", fix: "Revisar conector de 3 pines detrás del motor. Fallo común.", comp: "ckp" }
+                    "ckp": {
+                        title: "Sensor CKP (Cigüeñal)",
+                        icon: "fa-cog",
+                        pos: {top: '40%', left: '45%'},
+                        // 6. Función y 9. Ubicación
+                        desc: "Monitorea la posición de los pistones y la velocidad del motor. Ubicado en la parte trasera del motor, lado pared de fuego.",
+                        faults: "Auto no arranca, se apaga en marcha, Código P0335.",
+                        fix: "Revisar conector, suele llenarse de aceite. Medir resistencia. Reemplazar si no hay señal.",
+                        // 7. Pines y 8. Valores
+                        pins: [
+                            {id:"1", txt:"12V Alimentación (Ignición)", color:"#ff0000"},
+                            {id:"2", txt:"Tierra (Masa de Sensores)", color:"#000000"},
+                            {id:"3", txt:"Señal (Onda Cuadrada)", color:"#00ff00"}
+                        ],
+                        tests: [
+                            {type: "Resistencia", val: "N/A (Es efecto Hall)"},
+                            {type: "Voltaje (Pin 1)", val: "11.5V - 14V"},
+                            {type: "Señal (Pin 3)", val: "0V - 5V (Pulsos)"}
+                        ]
+                    },
+                    "maf": {
+                        title: "Sensor MAF (Flujo Aire)",
+                        icon: "fa-wind",
+                        pos: {top: '30%', left: '60%'},
+                        desc: "Mide la cantidad de aire que entra. Ubicado en el tubo de admisión después del filtro.",
+                        faults: "Humo negro, falta de potencia, Código P0101.",
+                        fix: "Limpieza con spray especial MAF. Verificar fugas de vacío.",
+                        pins: [
+                            {id:"1", txt:"Señal IAT (Temp)", color:"#ffff00"},
+                            {id:"2", txt:"Masa", color:"#000000"},
+                            {id:"3", txt:"12V Batería", color:"#ff0000"},
+                            {id:"4", txt:"5V Referencia", color:"#00e5ff"},
+                            {id:"5", txt:"Señal Flujo", color:"#00ff00"}
+                        ],
+                        tests: [
+                            {type: "Alimentación", val: "12V"},
+                            {type: "Señal (Ralentí)", val: "1.2V - 1.6V"},
+                            {type: "Señal (2500 RPM)", val: "1.8V - 2.2V"}
+                        ]
+                    }
                 }
             },
-            { 
-                id: "vw_jetta_a4", 
-                brand: "Volkswagen", model: "Jetta", version: "1999-2005 (Motor 2.0L)", 
-                engine: "2.0L AEG/AVH", trans: "01M Auto / 5MT", ecu: "Bosch Motronic",
-                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Volkswagen_Jetta_IV_--_08-28-2009.jpg/800px-Volkswagen_Jetta_IV_--_08-28-2009.jpg",
-                components: {
-                    "tba": { title: "Cuerpo Aceleración", icon: "fa-microchip", pins: 6, data: [ {id:1,hex:"#0f0",txt:"Actuador +"}, {id:2,hex:"#000",txt:"Actuador -"}, {id:3,hex:"#000",txt:"Masa Sensores"}, {id:4,hex:"#0ff",txt:"Señal TPS 1"}, {id:5,hex:"#0ff",txt:"5V Ref"}, {id:6,hex:"#0f0",txt:"Señal TPS 2"} ] },
-                    "ect": { title: "Sensor Temp (ECT)", icon: "fa-thermometer", pins: 4, data: [ {id:1,hex:"#8B4513",txt:"Masa ECU"}, {id:2,hex:"#00f",txt:"Señal a ECU"}, {id:3,hex:"#8B4513",txt:"Masa Tablero"}, {id:4,hex:"#00f",txt:"Señal Tablero"} ] }
-                },
-                procedures: {
-                    "adapt": { title: "Ajuste Básico 060", icon: "fa-laptop-code", steps: [{text:"Ignición ON, Motor OFF.",time:0},{text:"Escáner: Bloque 01 Motor -> Ajuste Básico.",time:0},{text:"Canal 060 -> Go.",time:0},{text:"Esperar 'ADP OK'.",time:5}] }
-                },
-                dtc_specific: {
-                    "P1582": { desc: "Adaptación Ralentí al límite", fix: "Limpiar cuerpo de aceleración y realizar Ajuste Básico 060.", comp: "tba" }
-                }
-            },
-            { 
-                id: "chevrolet_aveo_g1", 
-                brand: "Chevrolet", model: "Aveo", version: "2008-2017 (1.6L E-TEC II)", 
-                engine: "1.6L DOHC", trans: "Manual 5 Vel", ecu: "Delphi MT34",
+            {
+                id: "aveo_g1",
+                brand: "Chevrolet", model: "Aveo", minYear: 2008, maxYear: 2017,
                 img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Chevrolet_Aveo_sedan_--_01-05-2010.jpg/800px-Chevrolet_Aveo_sedan_--_01-05-2010.jpg",
                 components: {
-                    "bob": { title: "Bobina DIS", icon: "fa-bolt", pins: 3, data: [ {id:"A",hex:"#f00",txt:"12V Ignición"}, {id:"B",hex:"#000",txt:"Masa Chasis"}, {id:"C",hex:"#0f0",txt:"Señal Trigger (ECU)"} ] },
-                    "oxy": { title: "Sensor O2 (Banco 1)", icon: "fa-burn", pins: 4, data: [ {id:1,hex:"#fff",txt:"Calefactor +"}, {id:2,hex:"#fff",txt:"Calefactor -"}, {id:3,hex:"#888",txt:"Señal Baja"}, {id:4,hex:"#000",txt:"Señal Alta"} ] }
-                },
-                procedures: {
-                    "iac": { title: "Reaprendizaje IAC", icon: "fa-sliders-h", steps: [{text:"Desconectar batería 5 min.",time:0},{text:"Conectar. Switch ON 10s.",time:10},{text:"Switch OFF 10s.",time:10},{text:"Encender hasta temp. normal.",time:0}] }
-                },
-                dtc_specific: {
-                    "P0300": { desc: "Fallo Aleatorio Cilindros", fix: "Bobina de encendido suele fisurarse. Revisar cables de bujía.", comp: "bob" }
+                    "bob": {
+                        title: "Bobina de Encendido",
+                        icon: "fa-bolt",
+                        pos: {top: '25%', left: '50%'},
+                        desc: "Genera la chispa para las bujías. Ubicada sobre la tapa de punterías.",
+                        faults: "Pérdida de potencia, jaloneos, Código P0300.",
+                        fix: "Revisar grietas físicas en la bobina. Verificar cables de bujía.",
+                        pins: [
+                            {id:"A", txt:"12V Ignición", color:"#ff0000"},
+                            {id:"B", txt:"Tierra Chasis", color:"#000000"},
+                            {id:"C", txt:"Señal Disparo (ECU)", color:"#00ff00"}
+                        ],
+                        tests: [
+                            {type: "Primario Resis.", val: "0.5 - 2.0 Ohms"},
+                            {type: "Secundario Resis.", val: "6,000 - 10,000 Ohms"},
+                            {type: "Alimentación", val: "12V (Llave ON)"}
+                        ]
+                    }
                 }
             }
         ];
 
-        // --- LÓGICA DE FILTROS EN CASCADA (Marca -> Modelo -> Versión) ---
+        // --- LÓGICA DE FILTROS V12 (AÑO PRIMERO) ---
+        let selectedCar = null;
+
         window.onload = function() {
-            // 1. Cargar Marcas Únicas
+            // 1. Llenar Marcas
             const brands = [...new Set(carDB.map(c => c.brand))];
             const sel = document.getElementById('brandSelect');
             brands.forEach(b => {
@@ -223,260 +265,126 @@
             });
         };
 
+        function loadYears() {
+            // 2. Generar Años (1990 - 2026)
+            const yearSel = document.getElementById('yearSelect');
+            yearSel.innerHTML = '<option value="">2. Seleccionar Año</option>';
+            yearSel.disabled = false;
+            
+            // Llenar del 2026 al 1990
+            for(let y = 2026; y >= 1990; y--) {
+                let opt = document.createElement('option');
+                opt.value = y; opt.innerText = y;
+                yearSel.appendChild(opt);
+            }
+            
+            document.getElementById('modelSelect').innerHTML = '<option value="">3. Seleccionar Modelo</option>';
+            document.getElementById('modelSelect').disabled = true;
+            document.getElementById('btnSearch').disabled = true;
+        }
+
         function loadModels() {
             const brand = document.getElementById('brandSelect').value;
+            const year = parseInt(document.getElementById('yearSelect').value);
             const modelSel = document.getElementById('modelSelect');
-            const verSel = document.getElementById('versionSelect');
-            const btn = document.getElementById('btnSearch');
+            
+            modelSel.innerHTML = '<option value="">3. Seleccionar Modelo</option>';
+            modelSel.disabled = false;
 
-            // Resetear siguientes pasos
-            modelSel.innerHTML = '<option value="">2. Seleccionar Modelo...</option>';
-            verSel.innerHTML = '<option value="">3. Año / Motorización...</option>';
-            modelSel.disabled = true; verSel.disabled = true; btn.disabled = true;
-
-            if(brand) {
-                // Filtrar modelos de esa marca
-                const models = [...new Set(carDB.filter(c => c.brand === brand).map(c => c.model))];
-                models.forEach(m => {
+            // FILTRADO INTELIGENTE: Coincidir Marca y Rango de Años
+            const compatibleCars = carDB.filter(c => c.brand === brand && year >= c.minYear && year <= c.maxYear);
+            
+            if(compatibleCars.length > 0) {
+                compatibleCars.forEach(c => {
                     let opt = document.createElement('option');
-                    opt.value = m; opt.innerText = m;
+                    opt.value = c.id; 
+                    opt.innerText = c.model;
                     modelSel.appendChild(opt);
                 });
-                modelSel.disabled = false;
+            } else {
+                let opt = document.createElement('option');
+                opt.innerText = "No hay datos para este año";
+                modelSel.appendChild(opt);
+                modelSel.disabled = true;
             }
         }
 
-        function loadVersions() {
-            const brand = document.getElementById('brandSelect').value;
-            const model = document.getElementById('modelSelect').value;
-            const verSel = document.getElementById('versionSelect');
-            const btn = document.getElementById('btnSearch');
-
-            verSel.innerHTML = '<option value="">3. Año / Motorización...</option>';
-            verSel.disabled = true; btn.disabled = true;
-
-            if(brand && model) {
-                // Filtrar versiones específicas
-                const versions = carDB.filter(c => c.brand === brand && c.model === model);
-                versions.forEach(v => {
-                    let opt = document.createElement('option');
-                    opt.value = v.id; // Aquí guardamos el ID único (ej: nissan_sentra_b17)
-                    opt.innerText = v.version;
-                    verSel.appendChild(opt);
-                });
-                verSel.disabled = false;
-            }
+        function enableButton() {
+            document.getElementById('btnSearch').disabled = false;
         }
 
-        // Habilitar botón cuando se elija versión
-        document.getElementById('versionSelect').addEventListener('change', function() {
-            document.getElementById('btnSearch').disabled = !this.value;
-        });
+        function runApp() {
+            const carId = document.getElementById('modelSelect').value;
+            selectedCar = carDB.find(c => c.id === carId);
+            const year = document.getElementById('yearSelect').value;
 
-        // --- CARGAR DATOS DEL AUTO ---
-        let currentCar = null;
-
-        function runFilter() {
-            const carId = document.getElementById('versionSelect').value;
-            if(!carId) return;
-            
-            // Buscar en la BD
-            currentCar = carDB.find(c => c.id === carId);
-            
-            // Mostrar Workspace con animación
-            const ws = document.getElementById('workspace');
-            ws.style.display = 'none';
-            setTimeout(() => { ws.style.display = 'block'; }, 10);
-
-            // Llenar Datos
-            document.getElementById('carTitle').innerText = `${currentCar.brand} ${currentCar.model}`;
-            document.getElementById('techSpecs').innerHTML = `
-                <div class="spec-box"><small>AÑOS</small><strong>${currentCar.version.split('(')[0]}</strong></div>
-                <div class="spec-box"><small>MOTOR</small><strong>${currentCar.engine}</strong></div>
-                <div class="spec-box"><small>ECU</small><strong>${currentCar.ecu}</strong></div>
-                <div class="spec-box"><small>TRANS</small><strong>${currentCar.trans}</strong></div>
-            `;
-            
-            document.getElementById('carImg').src = currentCar.img;
-            
-            // Resetear Scanner DTC
-            document.getElementById('dtcResult').style.display = 'none';
-            document.getElementById('dtcInput').value = '';
+            document.getElementById('workspace').style.display = 'block';
+            document.getElementById('carTitle').innerText = `${selectedCar.brand} ${selectedCar.model}`;
+            document.getElementById('carSubtitle').innerText = `MODELO AÑO ${year} | MOTORIZACIÓN COMPATIBLE`;
+            document.getElementById('carImg').src = selectedCar.img;
 
             // Renderizar Hotspots
-            renderHotspots();
-
-            // Renderizar Procedimientos
-            const procGrid = document.getElementById('procGrid');
-            procGrid.innerHTML = "";
-            if(currentCar.procedures) {
-                for(const [procId, procData] of Object.entries(currentCar.procedures)) {
-                    procGrid.innerHTML += `
-                        <div class="card" onclick="openProcedure('${procId}')">
-                            <i class="fas ${procData.icon || 'fa-tools'}"></i>
-                            <div>${procData.title}</div>
-                        </div>`;
-                }
-            }
-        }
-
-        function renderHotspots(alertComp = null) {
             const hsContainer = document.getElementById('hotspotContainer');
             hsContainer.innerHTML = "";
             
-            // Posiciones simuladas (en una app real serían coordenadas X/Y precisas)
-            const positions = [
-                {top: '40%', left: '45%'}, {top: '30%', left: '60%'}, 
-                {top: '50%', left: '30%'}, {top: '20%', left: '50%'}
-            ];
-            
-            let i = 0;
-            for(const [compId, compData] of Object.entries(currentCar.components)) {
-                const pos = positions[i] || {top: '50%', left: '50%'};
-                // Si este componente es el culpable del DTC, le ponemos clase 'alert-mode'
-                const alertClass = (alertComp === compId) ? 'alert-mode' : '';
-                
+            for(const [key, data] of Object.entries(selectedCar.components)) {
                 hsContainer.innerHTML += `
-                    <div class="hotspot ${alertClass}" style="top:${pos.top}; left:${pos.left}" onclick="openPinout('${compId}')">
-                        <i class="fas ${compData.icon || 'fa-bolt'}"></i>
+                    <div class="hotspot" style="top:${data.pos.top}; left:${data.pos.left}" onclick="openComponent('${key}')">
+                        <i class="fas ${data.icon}"></i>
                     </div>`;
-                i++;
             }
         }
 
-        // --- LÓGICA DTC POTENCIADA (HÍBRIDA) ---
-        function checkDTC() {
-            const input = document.getElementById('dtcInput');
-            const code = input.value.toUpperCase().replace(/\s/g, ''); // Quitar espacios
-            const resultBox = document.getElementById('dtcResult');
-
-            if(code.length < 4) { alert("Código inválido. Ej: P0300"); return; }
-
-            let info = null;
-            let compId = null;
-
-            // 1. Buscar en códigos específicos del auto
-            if(currentCar.dtc_specific && currentCar.dtc_specific[code]) {
-                info = currentCar.dtc_specific[code];
-                info.source = "OEM / FABRICANTE";
-                compId = info.comp;
-            } 
-            // 2. Si no existe, buscar en la biblioteca universal
-            else if(UNIVERSAL_DTC[code]) {
-                info = UNIVERSAL_DTC[code];
-                info.source = "GENÉRICO OBDII";
-                info.fix = info.fix + " (Consulta manual para valores específicos)";
-            }
-
-            // Mostrar Resultados
-            resultBox.style.display = 'block';
-            if(info) {
-                resultBox.style.borderLeftColor = "var(--danger)";
-                resultBox.innerHTML = `
-                    <span class="dtc-code">${code}</span>
-                    <span class="dtc-desc">${info.desc}</span>
-                    <div class="dtc-details">
-                        <i class="fas fa-search"></i> <strong>Posibles Causas:</strong><br> ${info.cause || "No especificado."}<br><br>
-                        <i class="fas fa-database"></i> <strong>Fuente:</strong> ${info.source}
-                    </div>
-                    <div class="dtc-fix"><i class="fas fa-tools"></i> <strong>Solución:</strong> ${info.fix}</div>
-                `;
-                // Si hay un componente asociado, iluminarlo en el diagrama
-                renderHotspots(compId);
-                if(compId) alert(`⚠️ ¡Componente Identificado!\nEl diagrama ha iluminado en ROJO el componente relacionado.`);
-            } else {
-                resultBox.style.borderLeftColor = "var(--warning)";
-                resultBox.innerHTML = `
-                    <span class="dtc-code" style="color:var(--warning)">${code}</span>
-                    <span class="dtc-desc">Código Desconocido</span>
-                    <div class="dtc-details">Este código no está en nuestra base de datos actual para este vehículo.</div>
-                `;
-                renderHotspots(); // Limpiar alertas
-            }
-        }
-
-        // --- SISTEMA DE VENTANAS (PINOUTS) ---
-        function openPinout(compId) {
-            const comp = currentCar.components[compId];
+        // --- LÓGICA DEL SUPER MODAL ---
+        function openComponent(compId) {
+            const comp = selectedCar.components[compId];
             const modal = document.getElementById('modal');
-            const body = document.getElementById('mBody');
             document.getElementById('mTitle').innerText = comp.title;
             modal.style.display = "flex";
 
-            let html = `
-                <div class="connector-wrapper">
-                    <div class="connector" style="grid-template-columns: repeat(${comp.pins > 4 ? Math.ceil(comp.pins/2) : comp.pins}, 1fr)">
-                        ${Array.from({length: comp.pins}, (_, i) => `<div class="pin" id="p${i+1}">${i+1}</div>`).join('')}
-                    </div>
-                </div>
-                <div style="background:#0e0e0e; border-radius:8px; overflow:hidden;">
-            `;
-            
-            comp.data.forEach(d => {
-                html += `
-                    <div class="list-item" onclick="highlight('${d.id}')">
-                        <div class="color-dot" style="background:${d.hex}"></div>
+            // 1. Pestaña PINOUT
+            let pinHtml = "";
+            comp.pins.forEach(p => {
+                pinHtml += `
+                    <div class="pin-box">
+                        <div class="pin-number" style="border-color:${p.color}; color:${p.color}">${p.id}</div>
                         <div style="flex:1">
-                            <span style="color:#fff; font-weight:bold;">Pin ${d.id}</span>
-                            <div style="color:#888; font-size:0.85rem;">${d.txt}</div>
+                            <div style="color:#fff; font-weight:bold;">${p.txt}</div>
+                            <div style="color:#666; font-size:0.7rem;">Ubicación conector</div>
                         </div>
                     </div>`;
             });
-            html += `</div>`;
-            body.innerHTML = html;
-        }
+            document.getElementById('pinoutList').innerHTML = pinHtml;
 
-        function highlight(id) {
-            document.querySelectorAll('.pin').forEach(p => p.classList.remove('active'));
-            const p = document.getElementById(`p${id}`);
-            if(p) p.classList.add('active');
-        }
-
-        // --- SISTEMA DE PROCEDIMIENTOS ---
-        function openProcedure(procId) {
-            const proc = currentCar.procedures[procId];
-            const modal = document.getElementById('modal');
-            const body = document.getElementById('mBody');
-            document.getElementById('mTitle').innerText = proc.title;
-            modal.style.display = "flex";
-            
-            let html = `<div style="display:flex; flex-direction:column; gap:10px;">`;
-            proc.steps.forEach((step, idx) => {
-                html += `
-                    <div class="step" id="st${idx}">
-                        <div class="check" onclick="toggleStep(${idx})"><i class="fas fa-check"></i></div>
-                        <div style="flex:1">
-                            <div style="color:#ddd; margin-bottom:5px;">${step.text}</div>
-                            ${step.time > 0 ? `<button class="timer" onclick="startTimer(this, ${step.time})"><i class="fas fa-stopwatch"></i> Temporizador ${step.time}s</button>` : ''}
-                        </div>
-                    </div>`;
+            // 2. Pestaña VALORES
+            let specHtml = "";
+            comp.tests.forEach(t => {
+                specHtml += `<tr><td>${t.type}</td><td><span class="val-badge">${t.val}</span></td></tr>`;
             });
-            html += `</div>`;
-            body.innerHTML = html;
+            document.getElementById('specsTable').innerHTML = specHtml;
+
+            // 3. Pestaña INFO
+            document.getElementById('funcText').innerText = comp.desc;
+            document.getElementById('failText').innerText = comp.faults;
+            document.getElementById('fixText').innerText = comp.fix;
+
+            // Resetear a Pestaña 1
+            switchTab('tab1', document.querySelector('.tab')); 
         }
 
-        function toggleStep(idx) { document.getElementById(`st${idx}`).classList.toggle('done'); }
-        
-        function startTimer(btn, sec) {
-            let s = sec; btn.disabled = true; btn.style.background = "#555";
-            const int = setInterval(() => {
-                s--; btn.innerText = `Espere... ${s}s`;
-                if(s <= 0) { 
-                    clearInterval(int); 
-                    btn.innerText = "¡TIEMPO COMPLETADO!"; 
-                    btn.style.background = "var(--success)"; btn.style.color = "#000"; 
-                    // Vibración del celular si lo soporta
-                    if("vibrate" in navigator) navigator.vibrate(200);
-                }
-            }, 1000);
+        function switchTab(tabId, tabElement) {
+            // Ocultar todos los contenidos
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // Desactivar todos los botones
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            
+            // Activar el seleccionado
+            document.getElementById(tabId).classList.add('active');
+            if(tabElement) tabElement.classList.add('active');
         }
 
         function closeModal() { document.getElementById('modal').style.display = "none"; }
-        // Cerrar modal al tocar fuera
-        window.onclick = function(event) {
-            const modal = document.getElementById('modal');
-            if (event.target == modal) closeModal();
-        }
+        window.onclick = function(e) { if(e.target == document.getElementById('modal')) closeModal(); }
     </script>
 </body>
 </html>
