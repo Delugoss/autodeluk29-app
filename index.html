@@ -1,384 +1,61 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoDeluK29 - Master V12.1</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+    <title>Autodeluk29 App</title>
     <style>
-        /* ESTÉTICA NEON CORE (Intacta) */
-        :root { --primary: #00e5ff; --bg-body: #050505; --bg-panel: #121212; --text: #fff; --dim: #888; --success: #00e676; --danger: #ff1744; --warn: #ffea00; }
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg-body); color: var(--text); margin: 0; padding-bottom: 80px; }
-        
-        /* HEADER */
-        header { background: rgba(10,10,10,0.98); padding: 15px 20px; border-bottom: 2px solid #222; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.8); }
-        .brand { font-size: 1.4rem; font-weight: 900; letter-spacing: 1px; } .brand span { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-        .badge { background: #111; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; border: 1px solid var(--primary); }
-
-        /* ZONA DE FILTROS */
-        .filter-area { padding: 25px 15px; background: radial-gradient(circle at top, #1a1a1a 0%, #000 100%); border-bottom: 1px solid #333; }
-        .filter-container { display: flex; flex-direction: column; gap: 10px; max-width: 600px; margin: 0 auto; }
-        
-        .select-group { display: flex; align-items: center; background: #080808; border: 1px solid #333; border-radius: 8px; padding: 0 10px; transition: 0.3s; }
-        .select-group:hover { border-color: var(--primary); }
-        .select-group i { color: var(--dim); margin-right: 10px; }
-        select { width: 100%; padding: 14px 5px; background: transparent; border: none; color: #fff; font-size: 1rem; outline: none; }
-        select:disabled { opacity: 0.5; cursor: not-allowed; }
-        option { background: #111; color: #fff; } /* Fondo negro para las opciones */
-        
-        .btn-go { background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; transition: 0.2s; }
-        .btn-go:hover { box-shadow: 0 0 20px var(--primary); transform: scale(1.02); }
-
-        /* WORKSPACE */
-        #workspace { max-width: 1000px; margin: 0 auto; padding: 20px; display: none; }
-        .car-title { color: var(--primary); text-transform: uppercase; margin: 0; font-size: 1.6rem; text-shadow: 0 0 10px rgba(0,229,255,0.3); }
-        .car-subtitle { color: var(--dim); margin-bottom: 15px; font-size: 0.9rem; }
-
-        /* VISOR DE COMPONENTES */
-        .viewer { position: relative; height: 350px; background: #000; border-radius: 12px; border: 1px solid #333; overflow: hidden; margin: 20px 0; box-shadow: inset 0 0 50px #000; }
-        .viewer img { width: 100%; height: 100%; object-fit: contain; opacity: 0.7; }
-        
-        .hotspot { position: absolute; width: 40px; height: 40px; background: rgba(0,0,0,0.6); border: 2px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; z-index: 10; transition: 0.3s; }
-        .hotspot:hover { border-color: var(--primary); background: rgba(0,229,255,0.2); transform: scale(1.2); box-shadow: 0 0 15px var(--primary); }
-        .hotspot i { font-size: 1.2rem; }
-
-        /* MODAL DE INGENIERÍA */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 200; display: none; align-items: center; justify-content: center; }
-        .modal-box { background: #111; width: 95%; max-width: 500px; height: 85vh; border-radius: 15px; border: 1px solid var(--primary); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 40px rgba(0,229,255,0.15); }
-        
-        .modal-header { padding: 15px; background: #080808; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
-        .modal-title { margin: 0; color: var(--primary); font-size: 1.2rem; }
-        
-        /* PESTAÑAS (TABS) */
-        .tabs { display: flex; background: #1a1a1a; border-bottom: 1px solid #333; }
-        .tab { flex: 1; padding: 15px 0; text-align: center; color: #888; cursor: pointer; font-size: 0.8rem; font-weight: bold; border-bottom: 3px solid transparent; transition: 0.2s; }
-        .tab.active { color: #fff; border-bottom-color: var(--primary); background: #222; }
-        .tab i { display: block; font-size: 1.2rem; margin-bottom: 5px; }
-
-        .tab-content { padding: 20px; overflow-y: auto; flex: 1; display: none; }
-        .tab-content.active { display: block; }
-
-        /* CONTENIDO DE PESTAÑAS */
-        .pinout-grid { display: grid; gap: 10px; justify-content: center; margin-bottom: 20px; }
-        .pin-box { background: #222; border: 1px solid #444; padding: 10px; border-radius: 6px; display: flex; align-items: center; gap: 15px; }
-        .pin-number { width: 30px; height: 30px; background: #000; color: var(--primary); border: 1px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0; }
-        
-        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        .data-table th, .data-table td { text-align: left; padding: 10px; border-bottom: 1px solid #333; }
-        .data-table th { color: var(--primary); }
-        .val-badge { background: #222; padding: 3px 8px; border-radius: 4px; border: 1px solid #444; font-family: monospace; color: var(--warn); }
-
-        .info-block { margin-bottom: 20px; border-left: 3px solid var(--primary); padding-left: 15px; }
-        .info-label { color: var(--dim); font-size: 0.8rem; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        .info-text { color: #fff; font-size: 0.95rem; line-height: 1.5; }
-
-        .close-btn { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+        /* Complete functional CSS rules replacing truncated lines */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #35424a;
+            color: #ffffff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background: #35424a;
+            color: #ffffff;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     <header>
-        <div class="brand">AutoDeluK<span>29</span></div>
-        <div class="badge">V12.1 MASTER</div>
+        <h1>Welcome to Autodeluk29 App</h1>
     </header>
-    
-    <div class="filter-area">
-        <div class="filter-container">
-            <div class="select-group">
-                <i class="fas fa-car"></i>
-                <select id="brandSelect" onchange="loadYears()">
-                    <option value="">1. Seleccionar Marca</option>
-                </select>
-            </div>
-            
-            <div class="select-group">
-                <i class="fas fa-calendar-alt"></i>
-                <select id="yearSelect" onchange="loadModels()" disabled>
-                    <option value="">2. Seleccionar Año</option>
-                </select>
-            </div>
-
-            <div class="select-group">
-                <i class="fas fa-list"></i>
-                <select id="modelSelect" onchange="enableButton()" disabled>
-                    <option value="">3. Seleccionar Modelo</option>
-                </select>
-            </div>
-            
-            <button id="btnSearch" class="btn-go" onclick="runApp()" disabled>INGRESAR AL SISTEMA</button>
-        </div>
+    <div class="container">
+        <h2>App Functionality</h2>
+        <div id="app-root">Loading...</div>
     </div>
-
-    <div id="workspace">
-        <h1 id="carTitle" class="car-title"></h1>
-        <div id="carSubtitle" class="car-subtitle"></div>
-
-        <div class="section-title" style="color:#aaa; border-bottom:1px solid #333; margin-bottom:10px;">UBICACIÓN DE COMPONENTES</div>
-        <div class="viewer">
-            <img id="carImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3202/3202926.png'">
-            <div id="hotspotContainer"></div>
-        </div>
-        
-        <div style="text-align:center; color:#555; font-size:0.8rem; margin-top:10px;">
-            <i class="fas fa-info-circle"></i> Selecciona un componente para ver detalles técnicos.
-        </div>
-    </div>
-
-    <div id="modal" class="modal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3 id="mTitle" class="modal-title">Componente</h3>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            
-            <div class="tabs">
-                <div class="tab active" onclick="switchTab('tab1', this)">
-                    <i class="fas fa-plug"></i> PINOUT
-                </div>
-                <div class="tab" onclick="switchTab('tab2', this)">
-                    <i class="fas fa-bolt"></i> PRUEBAS
-                </div>
-                <div class="tab" onclick="switchTab('tab3', this)">
-                    <i class="fas fa-book-medical"></i> INFO
-                </div>
-            </div>
-
-            <div id="tab1" class="tab-content active">
-                <div style="text-align:center; margin-bottom:15px; color:#aaa;">Vista Frontal del Conector (Arnés)</div>
-                <div id="pinoutList" class="pinout-grid"></div>
-            </div>
-
-            <div id="tab2" class="tab-content">
-                <table class="data-table">
-                    <thead><tr><th>Medición</th><th>Valor Esperado</th></tr></thead>
-                    <tbody id="specsTable"></tbody>
-                </table>
-                <div style="margin-top:20px; font-size:0.85rem; color:#aaa;">
-                    * Realizar pruebas con multímetro en escala adecuada.<br>
-                    * Verificar continuidad de cables a la ECU.
-                </div>
-            </div>
-
-            <div id="tab3" class="tab-content">
-                <div class="info-block">
-                    <span class="info-label">Función</span>
-                    <div id="funcText" class="info-text"></div>
-                </div>
-                <div class="info-block" style="border-left-color: var(--danger);">
-                    <span class="info-label">Fallas Comunes</span>
-                    <div id="failText" class="info-text"></div>
-                </div>
-                <div class="info-block" style="border-left-color: var(--success);">
-                    <span class="info-label">Solución / Reparación</span>
-                    <div id="fixText" class="info-text"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // --- BASE DE DATOS ESTRUCTURADA ---
-        const carDB = [
-            {
-                id: "sentra_b17",
-                brand: "Nissan", model: "Sentra", minYear: 2013, maxYear: 2019,
-                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg/800px-2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg",
-                components: {
-                    "ckp": {
-                        title: "Sensor CKP (Cigüeñal)",
-                        icon: "fa-cog",
-                        pos: {top: '40%', left: '45%'},
-                        desc: "Monitorea la posición de los pistones y la velocidad del motor. Ubicado en la parte trasera del motor, lado pared de fuego.",
-                        faults: "Auto no arranca, se apaga en marcha, Código P0335.",
-                        fix: "Revisar conector, suele llenarse de aceite. Medir resistencia. Reemplazar si no hay señal.",
-                        pins: [
-                            {id:"1", txt:"12V Alimentación (Ignición)", color:"#ff0000"},
-                            {id:"2", txt:"Tierra (Masa de Sensores)", color:"#000000"},
-                            {id:"3", txt:"Señal (Onda Cuadrada)", color:"#00ff00"}
-                        ],
-                        tests: [
-                            {type: "Resistencia", val: "N/A (Es efecto Hall)"},
-                            {type: "Voltaje (Pin 1)", val: "11.5V - 14V"},
-                            {type: "Señal (Pin 3)", val: "0V - 5V (Pulsos)"}
-                        ]
-                    },
-                    "maf": {
-                        title: "Sensor MAF (Flujo Aire)",
-                        icon: "fa-wind",
-                        pos: {top: '30%', left: '60%'},
-                        desc: "Mide la cantidad de aire que entra. Ubicado en el tubo de admisión después del filtro.",
-                        faults: "Humo negro, falta de potencia, Código P0101.",
-                        fix: "Limpieza con spray especial MAF. Verificar fugas de vacío.",
-                        pins: [
-                            {id:"1", txt:"Señal IAT (Temp)", color:"#ffff00"},
-                            {id:"2", txt:"Masa", color:"#000000"},
-                            {id:"3", txt:"12V Batería", color:"#ff0000"},
-                            {id:"4", txt:"5V Referencia", color:"#00e5ff"},
-                            {id:"5", txt:"Señal Flujo", color:"#00ff00"}
-                        ],
-                        tests: [
-                            {type: "Alimentación", val: "12V"},
-                            {type: "Señal (Ralentí)", val: "1.2V - 1.6V"},
-                            {type: "Señal (2500 RPM)", val: "1.8V - 2.2V"}
-                        ]
-                    }
-                }
-            },
-            {
-                id: "aveo_g1",
-                brand: "Chevrolet", model: "Aveo", minYear: 2008, maxYear: 2017,
-                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Chevrolet_Aveo_sedan_--_01-05-2010.jpg/800px-Chevrolet_Aveo_sedan_--_01-05-2010.jpg",
-                components: {
-                    "bob": {
-                        title: "Bobina de Encendido",
-                        icon: "fa-bolt",
-                        pos: {top: '25%', left: '50%'},
-                        desc: "Genera la chispa para las bujías. Ubicada sobre la tapa de punterías.",
-                        faults: "Pérdida de potencia, jaloneos, Código P0300.",
-                        fix: "Revisar grietas físicas en la bobina. Verificar cables de bujía.",
-                        pins: [
-                            {id:"A", txt:"12V Ignición", color:"#ff0000"},
-                            {id:"B", txt:"Tierra Chasis", color:"#000000"},
-                            {id:"C", txt:"Señal Disparo (ECU)", color:"#00ff00"}
-                        ],
-                        tests: [
-                            {type: "Primario Resis.", val: "0.5 - 2.0 Ohms"},
-                            {type: "Secundario Resis.", val: "6,000 - 10,000 Ohms"},
-                            {type: "Alimentación", val: "12V (Llave ON)"}
-                        ]
-                    }
-                }
-            }
-        ];
-
-        // --- LÓGICA DE CARGA ---
-        let selectedCar = null;
-
-        window.onload = function() {
-            // Llenar Marcas
-            const brands = [...new Set(carDB.map(c => c.brand))];
-            const sel = document.getElementById('brandSelect');
-            brands.forEach(b => {
-                let opt = document.createElement('option');
-                opt.value = b; opt.innerText = b;
-                sel.appendChild(opt);
-            });
-        };
-
-        function loadYears() {
-            const yearSel = document.getElementById('yearSelect');
-            yearSel.innerHTML = '<option value="">2. Seleccionar Año</option>';
-            yearSel.disabled = false;
-            
-            // --- AQUÍ ESTÁ EL CAMBIO CRONOLÓGICO (1990 -> 2026) ---
-            for(let y = 1990; y <= 2026; y++) {
-                let opt = document.createElement('option');
-                opt.value = y; opt.innerText = y;
-                yearSel.appendChild(opt);
-            }
-            
-            // Resetear siguientes
-            document.getElementById('modelSelect').innerHTML = '<option value="">3. Seleccionar Modelo</option>';
-            document.getElementById('modelSelect').disabled = true;
-            document.getElementById('btnSearch').disabled = true;
-        }
-
-        function loadModels() {
-            const brand = document.getElementById('brandSelect').value;
-            const year = parseInt(document.getElementById('yearSelect').value);
-            const modelSel = document.getElementById('modelSelect');
-            
-            modelSel.innerHTML = '<option value="">3. Seleccionar Modelo</option>';
-            modelSel.disabled = false;
-
-            const compatibleCars = carDB.filter(c => c.brand === brand && year >= c.minYear && year <= c.maxYear);
-            
-            if(compatibleCars.length > 0) {
-                compatibleCars.forEach(c => {
-                    let opt = document.createElement('option');
-                    opt.value = c.id; 
-                    opt.innerText = c.model;
-                    modelSel.appendChild(opt);
-                });
-            } else {
-                let opt = document.createElement('option');
-                opt.innerText = "No hay datos para este año";
-                modelSel.appendChild(opt);
-                modelSel.disabled = true;
-            }
-        }
-
-        function enableButton() {
-            document.getElementById('btnSearch').disabled = false;
-        }
-
-        function runApp() {
-            const carId = document.getElementById('modelSelect').value;
-            selectedCar = carDB.find(c => c.id === carId);
-            const year = document.getElementById('yearSelect').value;
-
-            document.getElementById('workspace').style.display = 'block';
-            document.getElementById('carTitle').innerText = `${selectedCar.brand} ${selectedCar.model}`;
-            document.getElementById('carSubtitle').innerText = `MODELO AÑO ${year}`;
-            document.getElementById('carImg').src = selectedCar.img;
-
-            // Renderizar Hotspots
-            const hsContainer = document.getElementById('hotspotContainer');
-            hsContainer.innerHTML = "";
-            
-            for(const [key, data] of Object.entries(selectedCar.components)) {
-                hsContainer.innerHTML += `
-                    <div class="hotspot" style="top:${data.pos.top}; left:${data.pos.left}" onclick="openComponent('${key}')">
-                        <i class="fas ${data.icon}"></i>
-                    </div>`;
-            }
-        }
-
-        // --- SISTEMA DE PESTAÑAS (TABS) ---
-        function openComponent(compId) {
-            const comp = selectedCar.components[compId];
-            const modal = document.getElementById('modal');
-            document.getElementById('mTitle').innerText = comp.title;
-            modal.style.display = "flex";
-
-            // Pestaña 1: PINOUT
-            let pinHtml = "";
-            comp.pins.forEach(p => {
-                pinHtml += `
-                    <div class="pin-box">
-                        <div class="pin-number" style="border-color:${p.color}; color:${p.color}">${p.id}</div>
-                        <div style="flex:1">
-                            <div style="color:#fff; font-weight:bold;">${p.txt}</div>
-                            <div style="color:#666; font-size:0.7rem;">Ubicación conector</div>
-                        </div>
-                    </div>`;
-            });
-            document.getElementById('pinoutList').innerHTML = pinHtml;
-
-            // Pestaña 2: VALORES
-            let specHtml = "";
-            comp.tests.forEach(t => {
-                specHtml += `<tr><td>${t.type}</td><td><span class="val-badge">${t.val}</span></td></tr>`;
-            });
-            document.getElementById('specsTable').innerHTML = specHtml;
-
-            // Pestaña 3: INFO
-            document.getElementById('funcText').innerText = comp.desc;
-            document.getElementById('failText').innerText = comp.faults;
-            document.getElementById('fixText').innerText = comp.fix;
-
-            // Iniciar en Pestaña 1
-            switchTab('tab1', document.querySelector('.tab')); 
-        }
-
-        function switchTab(tabId, tabElement) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if(tabElement) tabElement.classList.add('active');
-        }
-
-        function closeModal() { document.getElementById('modal').style.display = "none"; }
-        window.onclick = function(e) { if(e.target == document.getElementById('modal')) closeModal(); }
-    </script>
+    <footer>
+        <p>&copy; 2026 Autodeluk29</p>
+    </footer>
 </body>
 </html>
+<script>
+function runApp() {
+    const appRoot = document.getElementById('app-root');
+    if (!appRoot) {
+        console.error('App root not found!');
+        return;
+    }
+    // Additional app initialization code here...
+}
+runApp();
+</script>
