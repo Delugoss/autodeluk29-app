@@ -4,58 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
-    <title>Autodeluk29 App</title>
+    <title>Vehicle Database</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Vehicle Database</h1>
+    </header>
+    <main>
+        <section id="filter-system">
+            <h2>Filter Vehicles</h2>
+            <form id="filter-form">
+                <label for="vehicle-type">Vehicle Type:</label>
+                <select id="vehicle-type" name="vehicle-type">
+                    <option value="all">All</option>
+                    <option value="car">Car</option>
+                    <option value="truck">Truck</option>
+                    <option value="motorcycle">Motorcycle</option>
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+        </section>
+        <section id="vehicle-list">
+            <h2>Available Vehicles</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Toyota</td>
+                        <td>Camry</td>
+                        <td>2022</td>
+                    </tr>
+                    <tr>
+                        <td>Honda</td>
+                        <td>Civic</td>
+                        <td>2021</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="modal-tabs">
+            <h2>Details</h2>
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event, 'Info')">Info</button>
+                <button class="tablinks" onclick="openTab(event, 'Features')">Features</button>
+            </div>
+            <div id="Info" class="tabcontent">
+                <h3>Vehicle Information</h3>
+                <p>Details about the vehicle goes here.</p>
+            </div>
+            <div id="Features" class="tabcontent">
+                <h3>Features</h3>
+                <p>Features of the vehicle go here.</p>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
     <style>
-        /* Complete functional CSS rules replacing truncated lines */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
         }
         header {
             background: #35424a;
             color: #ffffff;
-            padding: 20px 0;
+            padding: 10px 0;
             text-align: center;
         }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
+        #filter-system, #vehicle-list, #modal-tabs {
+            margin: 20px;
             padding: 20px;
+            background: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
-        footer {
-            text-align: center;
-            padding: 20px 0;
-            background: #35424a;
-            color: #ffffff;
-            bottom: 0;
+        table {
             width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #35424a;
+            color: white;
+        }
+        .tab {
+            display: flex;
+            cursor: pointer;
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            margin-top: 10px;
+            border-radius: 5px;
         }
     </style>
-</head>
-<body>
-    <header>
-        <h1>Welcome to Autodeluk29 App</h1>
-    </header>
-    <div class="container">
-        <h2>App Functionality</h2>
-        <div id="app-root">Loading...</div>
-    </div>
-    <footer>
-        <p>&copy; 2026 Autodeluk29</p>
-    </footer>
 </body>
 </html>
-<script>
-function runApp() {
-    const appRoot = document.getElementById('app-root');
-    if (!appRoot) {
-        console.error('App root not found!');
-        return;
-    }
-    // Additional app initialization code here...
-}
-runApp();
-</script>
