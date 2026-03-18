@@ -1,75 +1,57 @@
-const database = {
-    "sentra": {
-        name: "Nissan Sentra 2018",
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg/800px-2018_Nissan_Sentra_SV_2_1.8L_front_3.19.19.jpg",
-        components: {
-            "ckp": {
-                title: "Sensor CKP (Cigüeñal)",
-                pins: 3,
-                data: [
-                    { id: 1, hex: "#ff0000", txt: "12V Alimentación (Ignición)" },
-                    { id: 2, hex: "#000000", txt: "Tierra (Masa)" },
-                    { id: 3, hex: "#00ff00", txt: "Señal (Onda Cuadrada)" }
-                ]
-            },
-            "maf": {
-                title: "Sensor MAF",
-                pins: 5,
-                data: [
-                    { id: 1, hex: "#ffff00", txt: "Señal IAT" },
-                    { id: 2, hex: "#000000", txt: "Tierra" },
-                    { id: 3, hex: "#ff0000", txt: "12V Batería" },
-                    { id: 4, hex: "#00e5ff", txt: "5V Referencia" },
-                    { id: 5, hex: "#00ff00", txt: "Señal Flujo" }
-                ]
-            }
-        },
-        procedures: {
-            "oil": {
-                title: "Reset Vida Aceite",
-                steps: [
-                    { text: "1. Poner ignición en ON (Motor apagado).", time: 0 },
-                    { text: "2. Presionar botones de menú hasta ver 'Settings'.", time: 0 },
-                    { text: "3. Bajar a 'Maintenance' > 'Oil and Filter'.", time: 0 },
-                    { text: "4. Seleccionar 'Reset' y confirmar.", time: 0 },
-                    { text: "5. Apagar y encender para verificar.", time: 5 }
-                ]
-            },
-            "etb": {
-                title: "Aprendizaje Cuerpo Aceleración",
-                steps: [
-                    { text: "1. Motor en temperatura normal. Apagar.", time: 0 },
-                    { text: "2. Encender espera 2s. Apagar espera 10s.", time: 10 },
-                    { text: "3. Encender espera 2s. Apagar espera 10s.", time: 10 },
-                    { text: "4. Acelerar a fondo 2s y soltar.", time: 2 }
-                ]
-            }
-        }
-    },
-    "corolla": {
-        name: "Toyota Corolla 2020",
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/2020_Toyota_Corolla_LE%2C_front_12.21.19.jpg/800px-2020_Toyota_Corolla_LE%2C_front_12.21.19.jpg",
-        components: {
-            "cmp": {
-                title: "Sensor CMP (Árbol Levas)",
-                pins: 3,
-                data: [
-                    { id: 1, hex: "#00e5ff", txt: "VC (5V)" },
-                    { id: 2, hex: "#00ff00", txt: "Señal" },
-                    { id: 3, hex: "#000000", txt: "Masa" }
-                ]
-            }
-        },
-        procedures: {
-            "tpms": {
-                title: "Reset TPMS (Llantas)",
-                steps: [
-                    { text: "1. Inflar llantas a presión correcta.", time: 0 },
-                    { text: "2. Poner contacto ON.", time: 0 },
-                    { text: "3. Presionar botón SET bajo el volante.", time: 0 },
-                    { text: "4. Mantener presionado hasta que testigo parpadee 3 veces.", time: 3 }
-                ]
-            }
-        }   
-    }
-};
+# Comprehensive Automotive Database
+
+## Table of Contents
+1. **Car Brands**
+   - Brand A
+     - Components
+     - Pinouts
+     - Diagrams
+     - Images
+     - Maintenance Procedures
+   - Brand B
+     - Components
+     - Pinouts
+     - Diagrams
+     - Images
+     - Maintenance Procedures
+   - Brand C
+     - Components
+     - Pinouts
+     - Diagrams
+     - Images
+     - Maintenance Procedures
+   
+## Detailed Car Components
+### Brand A
+- **Engine**: Details about engine specifications and components.
+- **Transmission**: Information on different transmission types and maintenance.
+- **Electrical System**: Wiring diagrams and pin assignments.
+
+### Brand B
+- **Interior Components**: Details on dashboard layout and electrical connections.
+- **Exterior and Bodywork**: Diagrams for repairs.
+
+## Pinouts
+### Example Pinout for Engine Control Unit (ECU)
+| Pin Number | Function | Color Code |
+|------------|----------|------------|
+| 1          | Power    | Red        |
+| 2          | Ground   | Black      |
+
+## Diagrams
+### Sample Wiring Diagram for Brand A
+![Sample Diagram](image_url_here)
+
+## Images
+- Various images related to car components and maintenance procedures.
+
+## Maintenance Procedures
+### Brand A Routine Maintenance
+- Oil Change Procedure
+  - Step 1: Drain oil...
+  - Step 2: Replace filter...
+
+### Brand B Routine Maintenance
+- Brake Inspection
+  - Step 1: Check pads...
+  - Step 2: Measure rotor thickness...
